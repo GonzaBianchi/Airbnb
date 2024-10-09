@@ -1,43 +1,48 @@
 package com.gob.biblioteca_santa_fe.model;
 
-import java.util.Date;
-import java.util.List;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-
+@Table(name = "airbnb.usuario")
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private String apellido;
-    private Date fechaNacimiento;
+
+    @Column(unique = true, nullable = false)
+    private String dni;
+
+    @Column(name = "fecha_creacion")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
+
+    @Column(name = "fecha_modificacion")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_usuario", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario", nullable = false)
     private TipoUsuario tipoUsuario;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Prestamo> prestamos;
-
+    public enum TipoUsuario {
+        INQUILINO, ANFITRION, ADMINISTRADOR
+    }
 }
