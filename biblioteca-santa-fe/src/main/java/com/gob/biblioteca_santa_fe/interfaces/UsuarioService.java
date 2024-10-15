@@ -11,4 +11,8 @@ public interface UsuarioService {
     Optional<Usuario> findByUsername(String username);
 
     Usuario registrarUsuario(UsuarioDTO dto);
+
+    Usuario modificarUsuario(Long id, Usuario usuario);
+
+    Usuario getUsuario(Long id);
 }

@@ -57,4 +57,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
+    @Override
+    public Usuario getUsuario(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Usuario modificarUsuario(Long id, Usuario usuario) {
+        Usuario u = this.getUsuario(id);
+        
+        u.setApellido(usuario.getApellido());
+        u.setEmail(usuario.getEmail());
+        u.setNombre(usuario.getNombre());
+        u.setDni(usuario.getDni());
+        u.setFechaModificacion(new Date());
+        
+        return usuarioRepository.save(u);
+    }
 }
