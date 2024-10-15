@@ -5,7 +5,6 @@ import com.gob.biblioteca_santa_fe.DTOs.UsuarioDTO;
 import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,8 +17,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+   // @Autowired
+   // private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Usuario> findAll() {
@@ -51,7 +50,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setDni(dto.getDni());
         usuario.setEmail(dto.getEmail());
         usuario.setUsername(dto.getUsername());
-        usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+        //usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
         usuario.setTipoUsuario(Usuario.TipoUsuario.valueOf(dto.getTipoUsuario().toUpperCase()));
         usuario.setFechaCreacion(new Date());
         usuario.setFechaModificacion(new Date());
