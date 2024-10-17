@@ -1,13 +1,14 @@
 package com.gob.biblioteca_santa_fe.model;
 
 import lombok.Data;
+
 import jakarta.persistence.*;
 import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "airbnb_tipo_usuario")
-public class TipoUsuario {
+@Table(name = "airbnb_servicio")
+public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,6 +16,6 @@ public class TipoUsuario {
     @Column(length = 50)
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoUsuario")
-    private Set<UsuarioTipoUsuario> usuarioTipoUsuarios;
+    @ManyToMany(mappedBy = "servicios")
+    private Set<Hospedaje> hospedajes;
 }

@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(PrestamoId.class)
+// @IdClass(PrestamoId.class)
 @Entity
 public class Prestamo {
 
