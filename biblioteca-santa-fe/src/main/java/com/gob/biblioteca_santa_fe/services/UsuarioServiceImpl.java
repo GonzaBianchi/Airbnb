@@ -19,6 +19,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
    // @Autowired
    // private PasswordEncoder passwordEncoder;
+    // @Autowired
+    // private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Usuario> findAll() {
@@ -50,8 +52,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setDni(dto.getDni());
         usuario.setEmail(dto.getEmail());
         usuario.setUsername(dto.getUsername());
-        //usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
-        usuario.setTipoUsuario(Usuario.TipoUsuario.valueOf(dto.getTipoUsuario().toUpperCase()));
+        // usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+        // usuario.setTipoUsuario(UsuarioTipoUsuario.TipoUsuario.valueOf(dto.getTipoUsuario().toUpperCase()));
         usuario.setFechaCreacion(new Date());
         usuario.setFechaModificacion(new Date());
 
