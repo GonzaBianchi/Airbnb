@@ -16,5 +16,10 @@ public class UsuarioDTO {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private String dni;
+    private String rol;
     // private Long idTipoUsuario;
+
+    public boolean isValidRol() {
+        return rol.equals("inquilino") || rol.equals("anfitrión");
+    }
 }
