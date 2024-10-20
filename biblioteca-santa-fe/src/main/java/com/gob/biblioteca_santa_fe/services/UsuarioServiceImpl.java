@@ -29,7 +29,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> findByUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
-
+ 
     @Override
     public Usuario registrarUsuario(UsuarioDTO dto) {
         // Validaciones
