@@ -1,7 +1,11 @@
 package com.gob.biblioteca_santa_fe.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,6 +14,10 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "airbnb_hospedaje")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Hospedaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

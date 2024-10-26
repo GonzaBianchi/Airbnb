@@ -1,11 +1,20 @@
 package com.gob.biblioteca_santa_fe.DTOs;
 
-import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class HospedajeDTO {
     private Long id;
     private String descripcion;

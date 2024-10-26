@@ -1,4 +1,4 @@
-package com.gob.biblioteca_santa_fe.services;
+package com.gob.biblioteca_santa_fe.interfaces;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
@@ -7,27 +7,28 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import java.security.SignatureException;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
 
-@Configuration
+@Service
 public class JwtService {
 
     @Value("${security.jwt.expiration-in-minutes}")
     private Long EXPIRATION_IN_MINUTES;
 
-    @Value("${security.jwt-secret}")
+    @Value("${security.jwt-secret-key}")
     private String SECRET_KEY;
 
     public String generateToken(UserDetails user, Map<String, Object> extraClaims) {
         Date issuedAt = new Date(System.currentTimeMillis());
         Date expiration = new Date((EXPIRATION_IN_MINUTES * 60 * 1000) + issuedAt.getTime());
 
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(issuedAt)
@@ -36,12 +37,15 @@ public class JwtService {
                 .signWith(generateKey(), SignatureAlgorithm.HS256)
                 .compact();
 
-        return jwt;
     }
-
+    public boolean validateToken(String token, UserDetails userDetails) {
+        Claims claims = extractAllClaims(token);
+        String username = claims.getSubject();
+        Date expiration = claims.getExpiration();
+        return (username.equals(userDetails.getUsername()) && !expiration.before(new Date()));
+    }
     private Key generateKey() {
         byte[] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);
-        System.out.println(new String(passwordDecoded));
         return Keys.hmacShaKeyFor(passwordDecoded);
     }
 

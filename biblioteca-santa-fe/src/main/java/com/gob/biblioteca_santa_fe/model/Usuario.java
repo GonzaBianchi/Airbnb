@@ -8,9 +8,12 @@ import lombok.Setter;
 import jakarta.persistence.*;
 import java.util.*;
 
+import org.apache.logging.log4j.CloseableThreadContext.Instance;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import java.time.Instant;
+import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "airbnb.usuario")
@@ -43,15 +46,18 @@ public class Usuario implements UserDetails {
 
     @Column(name = "fecha_creacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCreacion;
+    private Instant fecha_creacion;
 
     @Column(name = "fecha_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaModificacion;
+    private LocalDate fecha_modificacion;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_usuario", nullable = false)
-    private TipoUsuario tipoUsuario;
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fecha_nacimiento;
+
+    //@Enumerated(EnumType.STRING)
+    //@Column(name = "tipo_usuario", nullable = false)
+    //private TipoUsuario tipoUsuario;
 
     @ManyToMany
     @JoinTable(
@@ -60,23 +66,21 @@ public class Usuario implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
     )
     private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
-    public enum TipoUsuario {
-        INQUILINO, ANFITRION, ADMINISTRADOR
-    }
+    //public enum TipoUsuario {
+    //    INQUILINO, ANFITRION, ADMINISTRADOR
+    //}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (tipoUsuarios == null || tipoUsuarios.isEmpty()) {
-            return new ArrayList<>(); // Retorna una lista vacía si no hay roles
+            return new ArrayList<>();
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        // Recorre la lista de tipoUsuarios y agrega cada rol con el prefijo "ROLE"
         for (TipoUsuario tipoUsuario : tipoUsuarios) {
-           //ayudaaaaaa authorities.add(new SimpleGrantedAuthority("ROLE" + tipoUsuario.gettipoUsuario()));
+           authorities.add(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()));
         }
         return authorities;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

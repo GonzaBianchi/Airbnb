@@ -1,20 +1,21 @@
 package com.gob.biblioteca_santa_fe.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "airbnb_tipo_usuario")
+@Getter
+@Setter
 public class TipoUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(length = 50)
+    @Column(name = "nombre")
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoUsuario")
-    private Set<UsuarioTipoUsuario> usuarioTipoUsuarios;
 }
