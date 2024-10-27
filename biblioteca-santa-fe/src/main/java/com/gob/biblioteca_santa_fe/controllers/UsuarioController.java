@@ -2,7 +2,6 @@ package com.gob.biblioteca_santa_fe.controllers;
 
 import com.gob.biblioteca_santa_fe.DTOs.EditarUsuarioDTO;
 import com.gob.biblioteca_santa_fe.DTOs.UsuarioDTO;
-import com.gob.biblioteca_santa_fe.model.Libro;
 import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.interfaces.UsuarioService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

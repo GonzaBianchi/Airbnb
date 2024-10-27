@@ -1,5 +1,4 @@
-package com.gob.biblioteca_santa_fe.security.config;
-
+package com.gob.biblioteca_santa_fe.security;
 import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +17,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityBeansInjector {
 
     @Autowired

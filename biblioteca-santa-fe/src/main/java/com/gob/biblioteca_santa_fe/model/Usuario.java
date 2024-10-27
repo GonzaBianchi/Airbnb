@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 @Data
 @Entity
-@Table(name = "airbnb.usuario")
+@Table(name = "airbnb_usuario")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,11 +45,9 @@ public class Usuario implements UserDetails {
     private String dni;
 
     @Column(name = "fecha_creacion")
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant fecha_creacion;
 
     @Column(name = "fecha_modificacion")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate fecha_modificacion;
 
     @Column(name = "fecha_nacimiento")

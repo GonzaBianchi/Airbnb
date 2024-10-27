@@ -1,15 +1,10 @@
-package com.gob.biblioteca_santa_fe.interfaces;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+package com.gob.biblioteca_santa_fe.services;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import java.security.SignatureException;
 
 import java.security.Key;
 import java.util.Date;
@@ -21,7 +16,7 @@ public class JwtService {
     @Value("${security.jwt.expiration-in-minutes}")
     private Long EXPIRATION_IN_MINUTES;
 
-    @Value("${security.jwt-secret-key}")
+    @Value("${security.jwt.secret-key}")
     private String SECRET_KEY;
 
     public String generateToken(UserDetails user, Map<String, Object> extraClaims) {
@@ -39,10 +34,20 @@ public class JwtService {
 
     }
     public boolean validateToken(String token, UserDetails userDetails) {
-        Claims claims = extractAllClaims(token);
-        String username = claims.getSubject();
-        Date expiration = claims.getExpiration();
-        return (username.equals(userDetails.getUsername()) && !expiration.before(new Date()));
+        try {
+            Claims claims = extractAllClaims(token);
+            String username = claims.getSubject();
+            Date expiration = claims.getExpiration();
+            return (username.equals(userDetails.getUsername()) && !expiration.before(new Date()));
+        } catch (ExpiredJwtException e) {
+
+            System.out.println("tokex expirado");
+            return false;
+        } catch (Exception e) {
+
+            System.out.println("Error en la validación del token JWT: " + e.getMessage());
+            return false;
+        }
     }
     private Key generateKey() {
         byte[] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);

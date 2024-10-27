@@ -1,9 +1,9 @@
 package com.gob.biblioteca_santa_fe.utils;
 
 import com.gob.biblioteca_santa_fe.model.Usuario;
-import com.gob.biblioteca_santa_fe.service.JwtService;
-import com.gob.biblioteca_santa_fe.service.UserDetailsServiceImp;
-import com.gob.biblioteca_santa_fe.service.UsuarioServiceImpl;
+import com.gob.biblioteca_santa_fe.services.JwtService;
+import com.gob.biblioteca_santa_fe.services.UserDetailsServiceImp;
+import com.gob.biblioteca_santa_fe.services.UsuarioServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,13 +11,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFIlter extends OncePerRequestFilter {
 
     @Autowired
     private JwtService jwtService;

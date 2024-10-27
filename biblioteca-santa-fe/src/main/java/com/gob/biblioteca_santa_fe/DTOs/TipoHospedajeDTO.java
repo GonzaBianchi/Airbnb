@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 
 @Data
 public class TipoHospedajeDTO {
+    
     private Long id;
 
     @NotBlank(message = "El nombre es obligatorio")

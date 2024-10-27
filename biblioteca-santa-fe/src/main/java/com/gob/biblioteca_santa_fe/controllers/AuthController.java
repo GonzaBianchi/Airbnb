@@ -3,15 +3,13 @@ package com.gob.biblioteca_santa_fe.controllers;
 import com.gob.biblioteca_santa_fe.DTOs.AuthRequest;
 import com.gob.biblioteca_santa_fe.DTOs.AuthResponse;
 import com.gob.biblioteca_santa_fe.DTOs.UsuarioDTO;
-import com.gob.biblioteca_santa_fe.interfaces.TipoUsuarioService;
-import com.gob.biblioteca_santa_fe.interfaces.UsuarioService;
 import com.gob.biblioteca_santa_fe.model.TipoUsuario;
 import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.services.JwtService;
+import com.gob.biblioteca_santa_fe.services.TipoUsuarioServiceImpl;
 import com.gob.biblioteca_santa_fe.services.UsuarioServiceImpl;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -26,17 +24,18 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtService jwtService;
 
-       @Autowired
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private TipoUsuarioService tipoUsuarioService;
+    private TipoUsuarioServiceImpl tipoUsuarioService;
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioService;
 
 
     @PostMapping("/login")

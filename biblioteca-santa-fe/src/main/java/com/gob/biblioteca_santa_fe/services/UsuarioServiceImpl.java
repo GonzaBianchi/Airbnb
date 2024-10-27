@@ -17,10 +17,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -82,7 +78,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             if (!StringUtils.hasText(usuario.getEmail()) || !usuario.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 throw new RuntimeException("Invalid email format.");
             }
-            // Check for duplicate email
             Optional<Usuario> existingUser = usuarioRepository.findByEmail(usuario.getEmail());
             if (existingUser.isPresent() && !existingUser.get().getId().equals(id)) {
                 throw new RuntimeException("Email already in use.");
