@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "airbnb_ciudad")
+@Table(name = "ciudad")
 public class Ciudad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

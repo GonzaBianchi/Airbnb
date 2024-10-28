@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Data
 @Entity
-@Table(name = "airbnb_usuario_tipo_usuario")
+@Table(name = "usuario_tipo_usuario")
 @Getter
 @Setter
 @NoArgsConstructor

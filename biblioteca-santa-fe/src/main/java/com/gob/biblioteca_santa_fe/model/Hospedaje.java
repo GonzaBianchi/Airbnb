@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "airbnb_hospedaje")
+@Table(name = "hospedaje")
 @Getter
 @Setter
 @NoArgsConstructor

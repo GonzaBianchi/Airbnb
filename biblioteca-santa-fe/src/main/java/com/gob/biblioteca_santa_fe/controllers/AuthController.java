@@ -8,6 +8,9 @@ import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.services.JwtService;
 import com.gob.biblioteca_santa_fe.services.TipoUsuarioServiceImpl;
 import com.gob.biblioteca_santa_fe.services.UsuarioServiceImpl;
+
+import jakarta.validation.Valid;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,12 +52,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Usuario register(@RequestBody UsuarioDTO usuarioDTO) {
+    public Usuario register(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
         usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setNombre(usuarioDTO.getNombre());
+        usuario.setDni(usuarioDTO.getDni());
         usuario.setApellido(usuarioDTO.getApellido());
         usuario.setFecha_nacimiento(usuarioDTO.getFecha_nacimiento());
         usuario.setFecha_creacion(Instant.now());

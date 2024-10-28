@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "airbnb_reserva")
+@Table(name = "reserva")
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

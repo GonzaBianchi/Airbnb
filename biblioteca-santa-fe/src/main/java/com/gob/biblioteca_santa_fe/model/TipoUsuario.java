@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 
 @Data
 @Entity
-@Table(name = "airbnb_tipo_usuario")
+@Table(name = "tipo_usuario")
 @Getter
 @Setter
 public class TipoUsuario {

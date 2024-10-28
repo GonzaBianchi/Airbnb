@@ -34,7 +34,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
 
     public Usuario registrOneCustomer(UsuarioDTO usuarioDTO) {
-
+        System.out.println("usuarioDTO registro: " + usuarioDTO);
         validatePassword(usuarioDTO);
 
 
@@ -64,13 +64,15 @@ public class UserDetailsServiceImp implements UserDetailsService {
     // TipoUsuarios a authorities y aignar esas authorities al usuario
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("load username: " + username);
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el nombre: " + username));
-
+                System.out.println("usuario cargado: " + usuario);
    
         Set<GrantedAuthority> authorities = usuario.getTipoUsuarios().stream()
                 .map(tipoUsuario -> new SimpleGrantedAuthority(tipoUsuario.getNombre()))
                 .collect(Collectors.toSet());
+                System.out.println("autoridades para usuario: " + username + ":" + authorities);
 
         return User.builder()
                 .username(usuario.getUsername())
