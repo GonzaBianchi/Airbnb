@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-
-
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -35,18 +33,18 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
     @GetMapping("/usuarios")
-    public ResponseEntity<List<Usuario>> findAll(){
-        List<Usuario> usuarios= usuarioService.findAll();
-        return  ResponseEntity.ok(usuarios);
+    public ResponseEntity<List<Usuario>> findAll() {
+        List<Usuario> usuarios = usuarioService.findAll();
+        return ResponseEntity.ok(usuarios);
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario){
-
+    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.crearUsuario(usuario));
     }
+
     @PutMapping("/edit/{id}")
     public ResponseEntity<String> editarUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
         try {
@@ -59,7 +57,8 @@ public class UsuarioController {
 
     @PutMapping("/modificar")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> updateUser(@Validated @RequestBody EditarUsuarioDTO editarUsuarioDTO, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<String> updateUser(@Validated @RequestBody EditarUsuarioDTO editarUsuarioDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             System.out.println("UserDetails es null");
             return ResponseEntity.status(401).body("el usuario no esta autenticado");

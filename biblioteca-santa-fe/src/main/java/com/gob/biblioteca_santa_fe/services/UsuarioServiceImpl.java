@@ -28,8 +28,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private TipoUsuarioRepository tipoUsuarioRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-   // @Autowired
-   // private PasswordEncoder passwordEncoder;
+    // @Autowired
+    // private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Usuario> findAll() {
@@ -40,14 +40,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> findByUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
+
     @Override
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
     }
+
     @Override
     public Usuario registrarUsuario(UsuarioDTO dto) {
         return null;
     }
+
     @Override
     public Usuario getUsuario(Long id) {
         return usuarioRepository.findById(id).orElse(null);
@@ -75,7 +78,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         if (optionalUsuario.isPresent()) {
             Usuario usuarioEditar = optionalUsuario.get();
-            if (!StringUtils.hasText(usuario.getEmail()) || !usuario.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            if (!StringUtils.hasText(usuario.getEmail())
+                    || !usuario.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 throw new RuntimeException("Invalid email format.");
             }
             Optional<Usuario> existingUser = usuarioRepository.findByEmail(usuario.getEmail());
@@ -93,7 +97,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         } else {
             throw new RuntimeException("ID del usuario no encontrado: " + id);
         }
-}
+    }
 
     @Override
     public Usuario modificarUsuario(Long id, Usuario usuario) {
@@ -102,7 +106,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public void actualizarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username) {
-        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("No existe el usuario " + username));
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("No existe el usuario " + username));
 
         usuario.setNombre(editarUsuarioDTO.getNombre());
         usuario.setApellido(editarUsuarioDTO.getApellido());

@@ -1,10 +1,8 @@
 package com.gob.biblioteca_santa_fe.services;
 
-
 import com.gob.biblioteca_santa_fe.DTOs.UsuarioDTO;
 import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.repository.UsuarioRepository;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -32,11 +29,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     public Usuario registrOneCustomer(UsuarioDTO usuarioDTO) {
         System.out.println("usuarioDTO registro: " + usuarioDTO);
         validatePassword(usuarioDTO);
-
 
         Usuario usuario = new Usuario();
         usuario.setUsername(usuarioDTO.getUsername());
@@ -50,7 +45,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
         return usuarioRepository.save(usuario);
     }
-    //valida contraseña
+
+    // valida contraseña
     private void validatePassword(UsuarioDTO usuarioDTO) {
         if (usuarioDTO.getPassword().length() < 8) {
             throw new IllegalArgumentException("La contraseña debe tener al menos 8 caracteres.");
@@ -58,26 +54,23 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     }
 
-
-
-
     // TipoUsuarios a authorities y aignar esas authorities al usuario
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("load username: " + username);
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el nombre: " + username));
-                System.out.println("usuario cargado: " + usuario);
-   
+        System.out.println("usuario cargado: " + usuario);
+
         Set<GrantedAuthority> authorities = usuario.getTipoUsuarios().stream()
                 .map(tipoUsuario -> new SimpleGrantedAuthority(tipoUsuario.getNombre()))
                 .collect(Collectors.toSet());
-                System.out.println("autoridades para usuario: " + username + ":" + authorities);
+        System.out.println("autoridades para usuario: " + username + ":" + authorities);
 
         return User.builder()
                 .username(usuario.getUsername())
                 .password(usuario.getPassword())
-                .authorities(authorities)  
+                .authorities(authorities)
                 .accountExpired(false)
                 .credentialsExpired(false)
                 .accountLocked(false)
@@ -85,4 +78,3 @@ public class UserDetailsServiceImp implements UserDetailsService {
                 .build();
     }
 }
-

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Data
@@ -33,10 +33,10 @@ public class Hospedaje {
     private BigDecimal precioPorNoche;
 
     @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    private Instant fechaCreacion;
 
     @Column(name = "fecha_modificacion")
-    private LocalDateTime fechaModificacion;
+    private Instant fechaModificacion;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_hospedaje")
@@ -50,6 +50,6 @@ public class Hospedaje {
     private Set<Reserva> reservas;
 
     @ManyToMany
-    @JoinTable(name = "airbnb_servicio_hospedaje", joinColumns = @JoinColumn(name = "ID_HOSPEDAJE"), inverseJoinColumns = @JoinColumn(name = "ID_SERVICIO"))
+    @JoinTable(name = "servicio_hospedaje", joinColumns = @JoinColumn(name = "ID_HOSPEDAJE"), inverseJoinColumns = @JoinColumn(name = "ID_SERVICIO"))
     private Set<Servicio> servicios;
 }

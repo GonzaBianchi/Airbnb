@@ -1,6 +1,7 @@
 package com.gob.biblioteca_santa_fe.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +9,14 @@ import lombok.Setter;
 import jakarta.persistence.*;
 import java.util.*;
 
-import org.apache.logging.log4j.CloseableThreadContext.Instance;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.time.Instant;
 import java.time.LocalDate;
+
 @Data
+@Builder
 @Entity
 @Table(name = "usuario")
 @Getter
@@ -35,14 +37,14 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(unique = true, nullable = false)
+    private String dni;
+
     @Column(nullable = false)
     private String nombre;
 
     @Column(nullable = false)
     private String apellido;
-
-    @Column(unique = true, nullable = false)
-    private String dni;
 
     @Column(name = "fecha_creacion")
     private Instant fecha_creacion;
@@ -53,20 +55,16 @@ public class Usuario implements UserDetails {
     @Column(name = "fecha_nacimiento")
     private LocalDate fecha_nacimiento;
 
-    //@Enumerated(EnumType.STRING)
-    //@Column(name = "tipo_usuario", nullable = false)
-    //private TipoUsuario tipoUsuario;
+    // @Enumerated(EnumType.STRING)
+    // @Column(name = "tipo_usuario", nullable = false)
+    // private TipoUsuario tipoUsuario;
 
     @ManyToMany
-    @JoinTable(
-            name = "usuario_tipo_usuario",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
-    )
+    @JoinTable(name = "usuario_tipo_usuario", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario"))
     private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
-    //public enum TipoUsuario {
-    //    INQUILINO, ANFITRION, ADMINISTRADOR
-    //}
+    // public enum TipoUsuario {
+    // INQUILINO, ANFITRION, ADMINISTRADOR
+    // }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -75,10 +73,11 @@ public class Usuario implements UserDetails {
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (TipoUsuario tipoUsuario : tipoUsuarios) {
-           authorities.add(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()));
         }
         return authorities;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

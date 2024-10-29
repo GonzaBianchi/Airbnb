@@ -24,6 +24,9 @@ public class UsuarioDTO {
     @NotBlank(message = "se debe agregar contraseña")
     private String password;
 
+    @Pattern(regexp = "\\d{8}", message = "dni de 8 digitos")
+    private String dni;
+
     @NotBlank(message = "se debe agregar nombre")
     private String nombre;
 
@@ -35,9 +38,6 @@ public class UsuarioDTO {
     private Instant fecha_creacion;
 
     private LocalDateTime fecha_modificacion;
-
-    @Pattern(regexp = "\\d{8}", message = "dni de 8 digitos")
-    private String dni;
 
     private Set<TipoUsuario> tipoUsuarios;
 

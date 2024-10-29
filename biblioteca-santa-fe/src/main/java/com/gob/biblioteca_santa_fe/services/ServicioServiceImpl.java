@@ -1,7 +1,7 @@
 package com.gob.biblioteca_santa_fe.services;
 
 import com.gob.biblioteca_santa_fe.interfaces.ServicioService;
-import com.gob.biblioteca_santa_fe.DTOs.ServicioDTO;
+// import com.gob.biblioteca_santa_fe.DTOs.ServicioDTO;
 import com.gob.biblioteca_santa_fe.model.Servicio;
 import com.gob.biblioteca_santa_fe.repository.ServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +27,7 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
-    public Servicio crearServicio(ServicioDTO dto) {
-        if (servicioRepository.existsByNombre(dto.getNombre())) {
-            throw new RuntimeException("El nombre de servicio ya está en uso");
-        }
-
-        // Crear nuevo servicio
-        Servicio servicio = new Servicio();
-        servicio.setNombre(dto.getNombre());
-
+    public Servicio crearServicio(Servicio servicio) {
         return servicioRepository.save(servicio);
     }
 

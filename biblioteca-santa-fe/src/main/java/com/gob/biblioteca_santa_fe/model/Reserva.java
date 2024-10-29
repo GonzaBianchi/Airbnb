@@ -1,8 +1,9 @@
 package com.gob.biblioteca_santa_fe.model;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,23 +28,23 @@ public class Reserva {
     private LocalDate fechaCheckOut;
 
     @Column(name = "cant_ninos", precision = 2, scale = 0)
-    private BigDecimal cantNinos;
+    private Integer cantNinos;
 
     @Column(name = "cant_adultos", precision = 2, scale = 0)
-    private BigDecimal cantAdultos;
+    private int cantAdultos;
 
     @Column(name = "cant_bebes", precision = 2, scale = 0)
-    private BigDecimal cantBebes;
+    private Integer cantBebes;
 
     @Column(name = "cant_mascotas", precision = 2, scale = 0)
-    private BigDecimal cantMascotas;
+    private Integer cantMascotas;
 
     @Column(name = "importe_total", precision = 10, scale = 2)
     private BigDecimal importeTotal;
 
     @Column(name = "fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    private Instant fechaCreacion;
 
     @Column(name = "fecha_modificacion")
-    private LocalDateTime fechaModificacion;
+    private Instant fechaModificacion;
 }

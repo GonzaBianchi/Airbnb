@@ -1,9 +1,7 @@
 package com.gob.biblioteca_santa_fe.utils;
 
-import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.services.JwtService;
 import com.gob.biblioteca_santa_fe.services.UserDetailsServiceImp;
-import com.gob.biblioteca_santa_fe.services.UsuarioServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -43,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            System.out.println("Userdetails"+ userDetails);
+            System.out.println("Userdetails" + userDetails);
             if (jwtService.validateToken(jwt, userDetails)) {
                 System.out.println(" jwt valido para : " + jwt);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

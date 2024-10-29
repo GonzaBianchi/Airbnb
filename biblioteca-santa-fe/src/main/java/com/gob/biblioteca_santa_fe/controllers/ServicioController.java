@@ -3,6 +3,7 @@ package com.gob.biblioteca_santa_fe.controllers;
 import java.util.List;
 import java.util.Optional;
 
+// import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,14 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gob.biblioteca_santa_fe.interfaces.ServicioService;
+import com.gob.biblioteca_santa_fe.DTOs.ServicioDTO;
+// import com.gob.biblioteca_santa_fe.interfaces.ServicioService;
 import com.gob.biblioteca_santa_fe.model.Servicio;
+import com.gob.biblioteca_santa_fe.services.ServicioServiceImpl;
 
 @RestController
 @RequestMapping("/api/servicios")
 public class ServicioController {
     @Autowired
-    private ServicioService servicioService;
+    private ServicioServiceImpl servicioService;
 
     @GetMapping()
     public ResponseEntity<List<Servicio>> findAll() {
@@ -34,8 +37,12 @@ public class ServicioController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> crearServicio(@RequestBody Servicio servicio) {
-        return ResponseEntity.ok("El servicio se creo con exito");
+    public Servicio crearServicio(@RequestBody ServicioDTO servicioDTO) {
+        Servicio servicio = Servicio.builder()
+                .nombre(servicioDTO.getNombre())
+                .build();
+
+        return servicioService.crearServicio(servicio);
     }
 
     @PostMapping("/{id}")

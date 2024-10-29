@@ -10,7 +10,7 @@ public interface ServicioService {
 
     Optional<Servicio> findByNombre(String nombre);
 
-    Servicio crearServicio(ServicioDTO dto);
+    Servicio crearServicio(Servicio servicio);
 
     Servicio modificarServicio(Long id, Servicio servicio);
 
