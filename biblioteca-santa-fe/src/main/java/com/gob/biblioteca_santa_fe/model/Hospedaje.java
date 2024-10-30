@@ -2,6 +2,7 @@ package com.gob.biblioteca_santa_fe.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.Instant;
 import java.util.Set;
 
 @Data
+@Builder
 @Entity
 @Table(name = "hospedaje")
 @Getter

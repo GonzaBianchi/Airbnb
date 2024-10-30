@@ -1,8 +1,9 @@
 package com.gob.biblioteca_santa_fe.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 // import java.util.Set;
 
@@ -10,6 +11,8 @@ import jakarta.persistence.*;
 @Builder
 @Entity
 @Table(name = "servicio")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +20,4 @@ public class Servicio {
 
     @Column(length = 50)
     private String nombre;
-
-    // @ManyToMany(mappedBy = "servicios")
-    // private Set<Hospedaje> hospedajes;
 }

@@ -1,5 +1,7 @@
 package com.gob.biblioteca_santa_fe.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gob.biblioteca_santa_fe.DTOs.HospedajeDTO;
@@ -22,10 +24,10 @@ public class HospedajeServiceImpl implements HospedajeService {
 
     @Autowired
     private ServicioRepository servicioRepository;
+
     @Override
-    public Hospedaje crearHospedaje(HospedajeDTO dtoHospedaje) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'crearHospedaje'");
+    public Hospedaje crearHospedaje(Hospedaje hospedaje) {
+        return hospedajeRepository.save(hospedaje);
     }
 
     @Override
@@ -39,6 +41,9 @@ public class HospedajeServiceImpl implements HospedajeService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminarHospedaje'");
     }
-    
-    
+
+    public List<Hospedaje> findAll() {
+        return hospedajeRepository.findAll();
+    }
+
 }
