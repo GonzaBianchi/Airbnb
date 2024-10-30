@@ -9,8 +9,14 @@ import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.services.JwtService;
 import com.gob.biblioteca_santa_fe.services.TipoUsuarioServiceImpl;
 import com.gob.biblioteca_santa_fe.services.UsuarioServiceImpl;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -50,7 +56,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public Usuario register(@RequestBody UsuarioDTO usuarioDTO) {
-        // Usuario usuario = new Usuario();
+
         Usuario usuario = Usuario.builder()
                 .username(usuarioDTO.getUsername())
                 .password(passwordEncoder.encode(usuarioDTO.getPassword()))
@@ -61,13 +67,6 @@ public class AuthController {
                 .fecha_nacimiento(usuarioDTO.getFecha_nacimiento())
                 .fecha_creacion(Instant.now())
                 .build();
-        // usuario.setUsername(usuarioDTO.getUsername());
-        // usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
-        // usuario.setEmail(usuarioDTO.getEmail());
-        // usuario.setNombre(usuarioDTO.getNombre());
-        // usuario.setApellido(usuarioDTO.getApellido());
-        // usuario.setFecha_nacimiento(usuarioDTO.getFecha_nacimiento());
-        // usuario.setFecha_creacion(Instant.now());
 
         Set<TipoUsuario> tiposUsuariosCargados = new HashSet<>();
         if (usuarioDTO.getTipoUsuarios() != null) {

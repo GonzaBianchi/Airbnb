@@ -59,8 +59,12 @@ public class Usuario implements UserDetails {
     // @Column(name = "tipo_usuario", nullable = false)
     // private TipoUsuario tipoUsuario;
 
-    @ManyToMany
-    @JoinTable(name = "usuario_tipo_usuario", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_tipo_usuario",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
+    )
     private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
     // public enum TipoUsuario {
     // INQUILINO, ANFITRION, ADMINISTRADOR
@@ -75,6 +79,7 @@ public class Usuario implements UserDetails {
         for (TipoUsuario tipoUsuario : tipoUsuarios) {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()));
         }
+        System.out.println("authorities: "+ authorities);
         return authorities;
     }
 

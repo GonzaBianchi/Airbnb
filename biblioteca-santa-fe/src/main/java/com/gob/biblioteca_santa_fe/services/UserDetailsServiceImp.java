@@ -63,7 +63,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         System.out.println("usuario cargado: " + usuario);
 
         Set<GrantedAuthority> authorities = usuario.getTipoUsuarios().stream()
-                .map(tipoUsuario -> new SimpleGrantedAuthority(tipoUsuario.getNombre()))
+                .map(tipoUsuario -> new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()))
                 .collect(Collectors.toSet());
         System.out.println("autoridades para usuario: " + username + ":" + authorities);
 

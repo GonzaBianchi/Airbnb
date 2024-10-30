@@ -5,6 +5,8 @@ import com.gob.biblioteca_santa_fe.DTOs.UsuarioDTO;
 import com.gob.biblioteca_santa_fe.model.Usuario;
 import com.gob.biblioteca_santa_fe.interfaces.UsuarioService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +26,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping("/registro")
-    public ResponseEntity<?> registrarUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-        try {
-            Usuario nuevoUsuario = usuarioService.registrarUsuario(usuarioDTO);
-            return ResponseEntity.ok("Usuario registrado exitosamente con ID: " + nuevoUsuario.getId());
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     @GetMapping("/usuarios")
     public ResponseEntity<List<Usuario>> findAll() {
+        System.out.println("Solicitando lista de usuarios...");
         List<Usuario> usuarios = usuarioService.findAll();
         return ResponseEntity.ok(usuarios);
     }
@@ -46,18 +39,18 @@ public class UsuarioController {
     }
 
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public ResponseEntity<String> editarUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
         try {
             usuarioService.editarUsuario(usuario, id);
-            return ResponseEntity.ok("User profile updated successfully.");
+            return ResponseEntity.ok("editado correctamente.");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/modificar")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> updateUser(@Validated @RequestBody EditarUsuarioDTO editarUsuarioDTO,
+    public ResponseEntity<String> modificarUser(@Validated @RequestBody EditarUsuarioDTO editarUsuarioDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             System.out.println("UserDetails es null");
@@ -71,7 +64,7 @@ public class UsuarioController {
             return ResponseEntity.status(403).body("no coinciden usuarios");
         }
 
-        usuarioService.actualizarUsuario(editarUsuarioDTO, authenticatedUsername);
+        usuarioService.modificarUsuario(editarUsuarioDTO, authenticatedUsername);
         return ResponseEntity.ok("ok");
     }
 }

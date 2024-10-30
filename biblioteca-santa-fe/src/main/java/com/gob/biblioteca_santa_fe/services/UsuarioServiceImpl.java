@@ -99,19 +99,27 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
-    @Override
-    public Usuario modificarUsuario(Long id, Usuario usuario) {
-        return null;
-    }
+
 
     @Override
-    public void actualizarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username) {
+    public void modificarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("No existe el usuario " + username));
-
+                System.out.println("Modificando nombre de usuario: " + usuario.getNombre() + " a " + editarUsuarioDTO.getNombre());
+                System.out.println("Modificando apellido de usuario: " + usuario.getApellido() + " a " + editarUsuarioDTO.getApellido());
+                System.out.println("Modificando email de usuario: " + usuario.getEmail() + " a " + editarUsuarioDTO.getEmail());
+                System.out.println("Modificando dni de usuario: " + usuario.getDni() + " a " + editarUsuarioDTO.getDni());
+                System.out.println("Estableciendo fecha de nacimiento a: " + editarUsuarioDTO.getFecha_nacimiento());
+                System.out.println("Estableciendo fecha de modificación a: " + LocalDate.now());
         usuario.setNombre(editarUsuarioDTO.getNombre());
         usuario.setApellido(editarUsuarioDTO.getApellido());
         usuario.setEmail(editarUsuarioDTO.getEmail());
+        usuario.setFecha_nacimiento(editarUsuarioDTO.getFecha_nacimiento());
+        usuario.setFecha_modificacion(LocalDate.now());
+        usuario.setDni(editarUsuarioDTO.getDni());
+        usuario.setUsername(editarUsuarioDTO.getUsername());
+        usuario.setPassword(editarUsuarioDTO.getPassword());
+        
 
         usuarioRepository.save(usuario);
     }

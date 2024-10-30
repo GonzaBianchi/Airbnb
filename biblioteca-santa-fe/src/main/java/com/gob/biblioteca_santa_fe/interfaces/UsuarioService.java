@@ -15,9 +15,8 @@ public interface UsuarioService {
 
     Usuario registrarUsuario(UsuarioDTO dto);
 
-    Usuario modificarUsuario(Long id, Usuario usuario);
+    void modificarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username);
 
-    void actualizarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username);
 
     Usuario getUsuario(Long id);
 

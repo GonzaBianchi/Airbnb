@@ -37,7 +37,7 @@ public class UsuarioDTO {
 
     private Instant fecha_creacion;
 
-    private LocalDateTime fecha_modificacion;
+    private LocalDate fecha_modificacion;
 
     private Set<TipoUsuario> tipoUsuarios;
 
