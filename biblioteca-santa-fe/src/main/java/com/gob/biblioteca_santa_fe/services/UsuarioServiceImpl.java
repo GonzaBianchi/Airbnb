@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -71,56 +70,24 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
-
-    @Override
-    public Usuario editarUsuario(Usuario usuario, Long id) {
-        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
-
-        if (optionalUsuario.isPresent()) {
-            Usuario usuarioEditar = optionalUsuario.get();
-            if (!StringUtils.hasText(usuario.getEmail())
-                    || !usuario.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-                throw new RuntimeException("Invalid email format.");
-            }
-            Optional<Usuario> existingUser = usuarioRepository.findByEmail(usuario.getEmail());
-            if (existingUser.isPresent() && !existingUser.get().getId().equals(id)) {
-                throw new RuntimeException("Email already in use.");
-            }
-            usuarioEditar.setUsername(usuario.getUsername());
-            usuarioEditar.setPassword(passwordEncoder.encode(usuario.getPassword()));
-            usuarioEditar.setEmail(usuario.getEmail());
-            usuarioEditar.setNombre(usuario.getNombre());
-            usuarioEditar.setApellido(usuario.getApellido());
-            usuarioEditar.setFecha_nacimiento(usuario.getFecha_nacimiento());
-            usuarioEditar.setFecha_modificacion(LocalDate.from(Instant.now()));
-            return usuarioRepository.save(usuarioEditar);
-        } else {
-            throw new RuntimeException("ID del usuario no encontrado: " + id);
-        }
-    }
-
-
-
     @Override
     public void modificarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("No existe el usuario " + username));
-                System.out.println("Modificando nombre de usuario: " + usuario.getNombre() + " a " + editarUsuarioDTO.getNombre());
-                System.out.println("Modificando apellido de usuario: " + usuario.getApellido() + " a " + editarUsuarioDTO.getApellido());
-                System.out.println("Modificando email de usuario: " + usuario.getEmail() + " a " + editarUsuarioDTO.getEmail());
-                System.out.println("Modificando dni de usuario: " + usuario.getDni() + " a " + editarUsuarioDTO.getDni());
-                System.out.println("Estableciendo fecha de nacimiento a: " + editarUsuarioDTO.getFecha_nacimiento());
-                System.out.println("Estableciendo fecha de modificación a: " + LocalDate.now());
         usuario.setNombre(editarUsuarioDTO.getNombre());
         usuario.setApellido(editarUsuarioDTO.getApellido());
         usuario.setEmail(editarUsuarioDTO.getEmail());
+        usuario.setPassword(passwordEncoder.encode(editarUsuarioDTO.getPassword()));
         usuario.setFecha_nacimiento(editarUsuarioDTO.getFecha_nacimiento());
         usuario.setFecha_modificacion(LocalDate.now());
         usuario.setDni(editarUsuarioDTO.getDni());
         usuario.setUsername(editarUsuarioDTO.getUsername());
-        usuario.setPassword(editarUsuarioDTO.getPassword());
         
 
         usuarioRepository.save(usuario);
+    }
+    @Override
+    public boolean existsByEmail(String email) {
+        return usuarioRepository.existsByEmail(email);
     }
 }

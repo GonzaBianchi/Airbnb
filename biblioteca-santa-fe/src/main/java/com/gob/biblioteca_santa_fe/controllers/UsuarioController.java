@@ -37,18 +37,6 @@ public class UsuarioController {
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.crearUsuario(usuario));
     }
-
-    @PutMapping("/edit/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-    public ResponseEntity<String> editarUsuario(@RequestBody Usuario usuario, @PathVariable Long id) {
-        try {
-            usuarioService.editarUsuario(usuario, id);
-            return ResponseEntity.ok("editado correctamente.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     @PutMapping("/modificar")
     public ResponseEntity<String> modificarUser(@Validated @RequestBody EditarUsuarioDTO editarUsuarioDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
@@ -65,6 +53,6 @@ public class UsuarioController {
         }
 
         usuarioService.modificarUsuario(editarUsuarioDTO, authenticatedUsername);
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok("usuario modificado exitosamente");
     }
 }

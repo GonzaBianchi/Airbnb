@@ -17,11 +17,10 @@ public interface UsuarioService {
 
     void modificarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username);
 
-
     Usuario getUsuario(Long id);
 
     Usuario crearUsuario(Usuario usuario);
 
-    Usuario editarUsuario(Usuario usuario, Long id);
+    boolean existsByEmail(String email);
 
 }

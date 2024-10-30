@@ -17,8 +17,6 @@ import lombok.Setter;
 public class EditarUsuarioDTO {
     private String username;
 
-    @NotBlank(message = "se debe agregar contraseña")
-    private String password;
     @Email(message = "mail debe ser valido")
     @NotBlank(message = "se debe ingresar mail")
     private String email;
@@ -32,6 +30,9 @@ public class EditarUsuarioDTO {
     @NotBlank(message = "se debe ingresar dni")
     @Pattern(regexp = "\\d{8}", message = "dni de 8 digitos")
     private String dni;
+
+    @NotBlank(message = "se debe ingresar contraseña")
+    private String password;
 
     private LocalDate fecha_nacimiento;
 
