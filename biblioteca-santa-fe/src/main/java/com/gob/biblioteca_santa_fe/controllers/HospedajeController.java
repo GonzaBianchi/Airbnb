@@ -1,6 +1,5 @@
 package com.gob.biblioteca_santa_fe.controllers;
 
-import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,27 +27,17 @@ public class HospedajeController {
     @PreAuthorize("permitAll")
     @GetMapping()
     public ResponseEntity<List<Hospedaje>> findAll() {
-        System.out.println("Accessing /api/hospedajes GET endpoint");
         List<Hospedaje> hospedajes = hospedajeService.findAll();
         return ResponseEntity.ok(hospedajes);
     }
 
-    @PreAuthorize("permitAll")
-    @PostMapping()
-    public ResponseEntity<Hospedaje> crearServicio(@RequestBody HospedajeDTO hospedajeDTO) {
-        System.out.println("Accessing /api/hospedajes POST endpoint");
-        System.out.println("HospedajeDTO crear: " + hospedajeDTO);
-        Hospedaje hospedaje = Hospedaje.builder()
-                .descripcion(hospedajeDTO.getDescripcion())
-                .imagen(hospedajeDTO.getImagen())
-                .precioPorNoche(hospedajeDTO.getPrecioPorNoche())
-                .fechaCreacion(Instant.now())
-                .build();
-
-        System.out.println("Attempting to create new service with user: "
+    @PreAuthorize("hasRole('ROLE_ANFITRION')")
+    @PostMapping("/crear")
+    public ResponseEntity<Hospedaje> crearHospedaje(@RequestBody HospedajeDTO hospedajeDTO) {
+        System.out.println("hospedaje: "
                 + SecurityContextHolder.getContext().getAuthentication().getName());
         try {
-            Hospedaje hospedajeCreado = hospedajeService.crearHospedaje(hospedaje);
+            Hospedaje hospedajeCreado = hospedajeService.crearHospedaje(hospedajeDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(hospedajeCreado);
         } catch (RuntimeException ex) {
             throw new RuntimeException(ex.getMessage());

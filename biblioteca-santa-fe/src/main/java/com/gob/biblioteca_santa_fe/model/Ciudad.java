@@ -11,7 +11,7 @@ import java.util.Set;
 public class Ciudad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(length = 50)
     private String nombre;

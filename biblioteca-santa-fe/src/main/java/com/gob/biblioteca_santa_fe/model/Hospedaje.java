@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -32,20 +34,20 @@ public class Hospedaje {
     private String imagen;
 
     @Column(name = "precio_por_noche", precision = 8, scale = 2)
-    private BigDecimal precioPorNoche;
+    private BigDecimal precio_por_noche;
 
     @Column(name = "fecha_creacion")
-    private Instant fechaCreacion;
+    private Instant fecha_creacion;
 
     @Column(name = "fecha_modificacion")
-    private Instant fechaModificacion;
+    private LocalDate fecha_modificacion;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_hospedaje")
-    private TipoHospedaje tipoHospedaje;
+    private TipoHospedaje id_tipo_hospedaje;
 
     @ManyToOne
-    @JoinColumn(name = "ID_CIUDAD")
+    @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;
 
     @OneToMany(mappedBy = "hospedaje")

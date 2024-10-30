@@ -11,11 +11,11 @@ import java.util.Set;
 public class TipoHospedaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(length = 50)
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoHospedaje")
+    @OneToMany(mappedBy = "id_tipo_hospedaje")
     private Set<Hospedaje> hospedajes;
 }

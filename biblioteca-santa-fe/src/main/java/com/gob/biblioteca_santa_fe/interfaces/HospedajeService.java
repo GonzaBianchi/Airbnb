@@ -5,7 +5,7 @@ import com.gob.biblioteca_santa_fe.model.Hospedaje;
 
 public interface HospedajeService {
 
-    Hospedaje crearHospedaje(Hospedaje hospedaje);
+    Hospedaje crearHospedaje(HospedajeDTO HospedajeDTO);
 
     Hospedaje modificarHospedaje(HospedajeDTO dtoHospedaje);
 

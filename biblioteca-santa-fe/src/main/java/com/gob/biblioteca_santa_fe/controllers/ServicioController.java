@@ -45,7 +45,7 @@ public class ServicioController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-    @PostMapping()
+    @PostMapping("/crear")
     public ResponseEntity<Servicio> crearServicio(@RequestBody ServicioDTO servicioDTO) {
         System.out.println("Accessing /api/servicios POST endpoint");
         System.out.println("ServicioDTO crear: " + servicioDTO);
@@ -84,7 +84,7 @@ public class ServicioController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> borrarServicio(@PathVariable Long id) {
         System.out.println("Accessing /api/servicios/{id} DELETE endpoint");
