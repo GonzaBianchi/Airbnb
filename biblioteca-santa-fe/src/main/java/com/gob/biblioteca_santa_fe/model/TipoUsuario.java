@@ -1,33 +1,21 @@
 package com.gob.biblioteca_santa_fe.model;
 
-import java.util.Date;
-import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
+import lombok.Getter;
+import lombok.Setter;
+import jakarta.persistence.*;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Table(name = "tipo_usuario")
+@Getter
+@Setter
 public class TipoUsuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private String descripcion;
-    private Date fechaCreacion;
-    private Date fechaModificacion;
+    @Column(name = "nombre")
+    private String nombre;
 
-    @OneToMany(mappedBy = "tipoUsuario")
-    private List<Usuario> usuarios;
 }
