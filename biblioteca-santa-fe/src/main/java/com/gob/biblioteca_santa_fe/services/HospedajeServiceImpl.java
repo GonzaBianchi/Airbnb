@@ -16,6 +16,7 @@ import com.gob.biblioteca_santa_fe.repository.HospedajeRepository;
 import com.gob.biblioteca_santa_fe.repository.ServicioRepository;
 import com.gob.biblioteca_santa_fe.repository.TipoHospedajeRepository;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -63,18 +64,41 @@ public Hospedaje crearHospedaje(HospedajeDTO hospedajeDTO) {
 
     return hospedajeRepository.save(hospedaje);
 }
-
-
     @Override
-    public Hospedaje modificarHospedaje(HospedajeDTO dtoHospedaje) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modificarHospedaje'");
+    public Hospedaje modificarHospedaje(Long id, HospedajeDTO hospedajeDTO) {
+    Hospedaje hospedaje = hospedajeRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado: " + id));
+
+    Set<Servicio> serviciosCargados = new HashSet<>();
+    for (Servicio servicio : hospedajeDTO.getServicios()) {
+        Servicio servicioCargado = servicioRepository.findById(servicio.getId())
+                .orElseThrow(() -> new RuntimeException("Servicio no dado de alta: " + servicio.getId()));
+        serviciosCargados.add(servicioCargado);
+    }
+
+    Ciudad ciudadCargada = ciudadRepository.findById(hospedajeDTO.getId_ciudad())
+            .orElseThrow(() -> new RuntimeException("Ciudad no encontrada: " + hospedajeDTO.getId_ciudad()));
+
+    TipoHospedaje tipoHospedajeCargado = tipoHospedajeRepository.findById(hospedajeDTO.getId_tipo_hospedaje())
+            .orElseThrow(() -> new RuntimeException("Tipo de hospedaje no encontrado: " + hospedajeDTO.getId_tipo_hospedaje()));
+
+    hospedaje.setDescripcion(hospedajeDTO.getDescripcion());
+    hospedaje.setImagen(hospedajeDTO.getImagen());
+    hospedaje.setPrecio_por_noche(hospedajeDTO.getPrecioPorNoche());
+    hospedaje.setFecha_modificacion(LocalDate.now());
+    hospedaje.setCiudad(ciudadCargada);
+    hospedaje.setId_tipo_hospedaje(tipoHospedajeCargado);
+    hospedaje.setServicios(serviciosCargados);
+
+    return hospedajeRepository.save(hospedaje);
     }
 
     @Override
-    public Hospedaje eliminarHospedaje(HospedajeDTO dtoHospedaje) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarHospedaje'");
+    public void eliminarHospedaje(Long id) {
+        Hospedaje hospedaje = hospedajeRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado con el ID: " + id));
+
+        hospedajeRepository.delete(hospedaje);
     }
 
     public List<Hospedaje> findAll() {

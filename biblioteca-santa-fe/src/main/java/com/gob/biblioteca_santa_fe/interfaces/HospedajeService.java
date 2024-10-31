@@ -7,7 +7,7 @@ public interface HospedajeService {
 
     Hospedaje crearHospedaje(HospedajeDTO HospedajeDTO);
 
-    Hospedaje modificarHospedaje(HospedajeDTO dtoHospedaje);
+    Hospedaje modificarHospedaje(Long id, HospedajeDTO dtoHospedaje);
 
-    Hospedaje eliminarHospedaje(HospedajeDTO dtoHospedaje);
+    void eliminarHospedaje(Long id);
 }

@@ -14,8 +14,11 @@ import com.gob.biblioteca_santa_fe.DTOs.HospedajeDTO;
 import com.gob.biblioteca_santa_fe.model.Hospedaje;
 import com.gob.biblioteca_santa_fe.services.HospedajeServiceImpl;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -33,15 +36,34 @@ public class HospedajeController {
 
     @PreAuthorize("hasRole('ROLE_ANFITRION')")
     @PostMapping("/crear")
-    public ResponseEntity<Hospedaje> crearHospedaje(@RequestBody HospedajeDTO hospedajeDTO) {
+    public ResponseEntity<String> crearHospedaje(@RequestBody HospedajeDTO hospedajeDTO) {
         System.out.println("hospedaje: "
                 + SecurityContextHolder.getContext().getAuthentication().getName());
         try {
-            Hospedaje hospedajeCreado = hospedajeService.crearHospedaje(hospedajeDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(hospedajeCreado);
+            hospedajeService.crearHospedaje(hospedajeDTO);
+            return ResponseEntity.status(HttpStatus.OK).body("hospedaje creado correctamente");
         } catch (RuntimeException ex) {
             throw new RuntimeException(ex.getMessage());
         }
     }
-
+    @PreAuthorize("hasRole('ROLE_ANFITRION')")
+    @PutMapping("/modificar/{id}")
+    public ResponseEntity<String> modificarHospedaje(@PathVariable Long id, @RequestBody HospedajeDTO hospedajeDTO) {
+    try {
+        hospedajeService.modificarHospedaje(id, hospedajeDTO);
+        return ResponseEntity.status(HttpStatus.OK).body("Hospedaje modificado correctamente");
+    } catch (RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+}
+    @PreAuthorize("hasRole('ROLE_ANFITRION')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarHospedaje(@PathVariable Long id) {
+        try {
+            hospedajeService.eliminarHospedaje(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Hospedaje eliminado correctamente");
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+}
 }

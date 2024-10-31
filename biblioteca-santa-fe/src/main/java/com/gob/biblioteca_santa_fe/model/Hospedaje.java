@@ -14,6 +14,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Builder
 @Entity
@@ -50,7 +52,8 @@ public class Hospedaje {
     @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;
 
-    @OneToMany(mappedBy = "hospedaje")
+    @OneToMany(mappedBy = "hospedaje", fetch = FetchType.LAZY)
+    @JsonIgnore 
     private Set<Reserva> reservas;
 
     @ManyToMany
