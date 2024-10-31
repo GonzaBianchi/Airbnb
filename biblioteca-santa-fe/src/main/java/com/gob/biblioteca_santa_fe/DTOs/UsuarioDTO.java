@@ -2,7 +2,6 @@ package com.gob.biblioteca_santa_fe.DTOs;
 
 import lombok.Data;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Instant;
 import java.util.Set;
 
@@ -40,6 +39,4 @@ public class UsuarioDTO {
     private LocalDate fecha_modificacion;
 
     private Set<TipoUsuario> tipoUsuarios;
-
-    // private Long idTipoUsuario;
 }

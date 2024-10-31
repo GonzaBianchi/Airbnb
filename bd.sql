@@ -70,18 +70,19 @@ CREATE TABLE servicio_hospedaje(
 );
 
 CREATE TABLE reserva(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
 	id_hospedaje BIGINT NOT NULL,
 	id_usuario BIGINT NOT NULL,
 	fecha_check_in DATE NOT NULL,
 	fecha_check_out DATE NOT NULL,
-	cant_niños NUMERIC(2,0) DEFAULT 0,
+	cant_ninos NUMERIC(2,0) DEFAULT 0,
 	cant_adultos NUMERIC(2,0) DEFAULT 0,
 	cant_bebes NUMERIC(2,0) DEFAULT 0,
 	cant_mascotas NUMERIC(2,0) DEFAULT 0,
 	importe_total NUMERIC(10,2) NOT NULL,
 	fecha_creacion DATETIME NOT NULL,
 	fecha_modificacion DATETIME DEFAULT NULL,
-	PRIMARY KEY(id_hospedaje, id_usuario),
+    estado ENUM('Pendiente', 'Confirmada', 'Cancelada') NOT NULL DEFAULT 'Pendiente',
 	FOREIGN KEY(id_hospedaje) REFERENCES hospedaje(id),
 	FOREIGN KEY(id_usuario) REFERENCES usuario(id)
 );
