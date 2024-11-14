@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { AuthService, RegistrationData } from '../services/auth.service';
+import { AuthService, RegistrationData } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  registrationForm: FormGroup;
+  registrationForm: FormGroup
 
   constructor(
     private formBuilder: FormBuilder,
