@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 export interface TipoUsuario {
   id: number;
@@ -34,8 +36,16 @@ export interface AuthResponse {
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
+  private tokenKey = 'token';
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
+    this.checkToken();
+  }
 
   register(data: RegistrationData): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data, { responseType: 'text' })
@@ -44,7 +54,56 @@ export class AuthService {
 
   login(data: LoginData): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap(response => {
+          if (response.token) {
+            this.setToken(response.token);
+          }
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  logout(): void {
+    localStorage.removeItem(this.tokenKey);
+    this.isAuthenticatedSubject.next(false);
+    this.router.navigate(['/login']);
+  }
+
+  private setToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+    this.isAuthenticatedSubject.next(true);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      const isTokenExpired = decodedToken.exp * 1000 < Date.now();
+      
+      if (isTokenExpired) {
+        this.logout();
+        return false;
+      }
+      
+      return true;
+    } catch {
+      this.logout();
+      return false;
+    }
+  }
+
+  private checkToken(): void {
+    const isLoggedIn = this.isLoggedIn();
+    this.isAuthenticatedSubject.next(isLoggedIn);
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -1,8 +1,14 @@
 <header>
   <nav>
     <a routerLink="/">Home</a>
-    <a routerLink="/login">Login</a>
-    <a routerLink="/register">Register</a>
+    <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    </ng-container>
+    <ng-container *ngIf="(authService.isAuthenticated$ | async)">
+      <a routerLink="/profile">Mi Perfil</a>
+      <button (click)="logout()">Logout</button>
+    </ng-container>
   </nav>
 </header>
 <main>
