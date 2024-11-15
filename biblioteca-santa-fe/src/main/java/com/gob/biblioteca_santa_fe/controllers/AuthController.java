@@ -46,26 +46,32 @@ public class AuthController {
     private TipoUsuarioServiceImpl tipoUsuarioService;
     @Autowired
     private UsuarioServiceImpl usuarioService;
-
-  @PostMapping("/login")
-public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
-    try {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = jwtService.generateToken(userDetails, new HashMap<>());
-        
-        return ResponseEntity.ok(new AuthResponse(token));
-        
-    } catch (BadCredentialsException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("Credenciales inválidas"));
-    } catch (AuthenticationException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new AuthResponse("Error en la autenticación"));
-    } catch (Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new AuthResponse("Error al iniciar sesión"));
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String token = jwtService.generateToken(userDetails, new HashMap<>());
+            
+            Usuario usuario = usuarioService.findByUsername(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            
+            AuthResponse response = new AuthResponse(token, usuario.getUsername(), usuario.getTipoUsuarios());
+            return ResponseEntity.ok(response); 
+        } catch (BadCredentialsException ex) {
+            AuthResponse errorResponse = new AuthResponse("Credenciales inválidas", null, null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        } catch (AuthenticationException ex) {
+            AuthResponse errorResponse = new AuthResponse("Error en la autenticación", null, null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        } catch (Exception ex) {
+            AuthResponse errorResponse = new AuthResponse("Error al iniciar sesión", null, null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
-}
+    
 
 
     @PostMapping("/register")
