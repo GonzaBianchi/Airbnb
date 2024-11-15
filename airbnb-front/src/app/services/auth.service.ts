@@ -47,7 +47,8 @@ export class AuthService {
   private tokenKey = 'token';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-
+  private isInquilinoOrAnfritionSubject = new BehaviorSubject<boolean>(false);
+  isInquilinoOrAnfrition$ = this.isInquilinoOrAnfritionSubject.asObservable();
   constructor(
     private http: HttpClient,
     private router: Router
@@ -95,11 +96,13 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.isAuthenticatedSubject.next(false);
+    this.isInquilinoOrAnfritionSubject.next(false);
     this.router.navigate(['/login']);
   }
 
   private setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
+    this.getTipoUsuarios().some(tipo => tipo.nombre === 'ADMINISTRADOR') ? this.isInquilinoOrAnfritionSubject.next(false) : this.isInquilinoOrAnfritionSubject.next(true);
     this.isAuthenticatedSubject.next(true);
   }
 
@@ -129,10 +132,11 @@ export class AuthService {
     }
   }
   
-  private checkToken(): void {
+  public checkToken(): void {
     const isLoggedIn = this.isLoggedIn();
     this.isAuthenticatedSubject.next(isLoggedIn);
   }
+
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string;
@@ -151,4 +155,5 @@ export class AuthService {
     
     return throwError(() => ({ status: error.status, message: errorMessage }));
   }
+
 }

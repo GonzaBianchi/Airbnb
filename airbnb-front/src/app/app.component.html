@@ -3,12 +3,16 @@
     <a routerLink="/">Home</a>
     <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
       <a routerLink="/login">Login</a>
-      <a routerLink="/register">Register</a>
+      <a routerLink="/register">Registrarse</a>
+    </ng-container>
+    <ng-container *ngIf="(authService.isAuthenticated$ | async) && (authService.isInquilinoOrAnfrition$ | async)">
+      <a routerLink="/profile">Perfil de Usuario</a>
     </ng-container>
     <ng-container *ngIf="(authService.isAuthenticated$ | async)">
-      <a routerLink="/profile">Mi Perfil</a>
+
       <button (click)="logout()">Logout</button>
     </ng-container>
+    
   </nav>
 </header>
 <main>

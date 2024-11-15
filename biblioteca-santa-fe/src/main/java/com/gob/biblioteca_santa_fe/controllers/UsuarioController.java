@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,12 @@ public class UsuarioController {
         System.out.println("Solicitando lista de usuarios...");
         List<Usuario> usuarios = usuarioService.findAll();
         return ResponseEntity.ok(usuarios);
+    }
+    @GetMapping("/{username}")
+    public ResponseEntity<Optional<Usuario>> getUserByUsername(@PathVariable String username) {
+
+        return ResponseEntity.ok(usuarioService.findByUsername(username));
+        
     }
 
     @PostMapping("/crear")
@@ -56,3 +63,4 @@ public class UsuarioController {
         return ResponseEntity.ok("usuario modificado exitosamente");
     }
 }
+
