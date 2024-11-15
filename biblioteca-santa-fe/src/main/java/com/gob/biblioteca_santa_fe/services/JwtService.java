@@ -6,9 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.gob.biblioteca_santa_fe.model.TipoUsuario;
+
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -19,10 +25,24 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String generateToken(UserDetails user, Map<String, Object> extraClaims) {
+    public String generateToken(UserDetails user, Set<TipoUsuario> tipoUsuarios, Map<String, Object> extraClaims) {
         Date issuedAt = new Date(System.currentTimeMillis());
         Date expiration = new Date((EXPIRATION_IN_MINUTES * 60 * 1000) + issuedAt.getTime());
-
+    
+        // Convertir la Set de TipoUsuario a un formato serializable
+        List<Map<String, Object>> tipoUsuariosMap = tipoUsuarios.stream()
+            .map(tipo -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", tipo.getId());
+                map.put("nombre", tipo.getNombre());
+                // Agrega otros campos necesarios del TipoUsuario
+                return map;
+            })
+            .collect(Collectors.toList());
+    
+        // Agregar tipoUsuarios a los claims
+        extraClaims.put("tipoUsuarios", tipoUsuariosMap);
+    
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
@@ -31,7 +51,11 @@ public class JwtService {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .signWith(generateKey(), SignatureAlgorithm.HS256)
                 .compact();
-
+    }
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> extractTipoUsuarios(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("tipoUsuarios", List.class);
     }
     public boolean validateToken(String token, UserDetails userDetails) {
         try {

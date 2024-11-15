@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   loading: boolean = false;
-
+  
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -23,14 +23,11 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]]
     });
   }
-
-  ngOnInit(): void {
-    // Si necesitas inicializar algo al cargar el componente
-  }
-
-  // Getter para acceder fácilmente a los controles del formulario
+  
   get f() {
     return this.loginForm.controls;
+  }
+  ngOnInit(): void {
   }
 
   onSubmit() {
@@ -44,9 +41,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         if (response.token) {
-          // Aquí puedes guardar el token en localStorage o donde prefieras
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/']); // Navega a la ruta que desees después del login
+          // La lógica de guardado del token y tipoUsuarios ya está en el servicio
+          this.router.navigate(['/']);
         }
       },
       error: (error) => {
@@ -59,3 +55,4 @@ export class LoginComponent implements OnInit {
     });
   }
 }
+  

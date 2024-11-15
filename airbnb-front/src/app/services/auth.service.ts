@@ -5,11 +5,6 @@ import { catchError, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
-export interface TipoUsuario {
-  id: number;
-  nombre: string;
-}
-
 export interface RegistrationData {
   username: string;
   password: string;
@@ -25,10 +20,23 @@ export interface LoginData {
   username: string;
   password: string;
 }
+export interface TipoUsuario {
+  id: number;
+  nombre: string;
+}
 
 export interface AuthResponse {
-  token?: string;
+  token: string;
+  username: string;
+  tipoUsuarios: TipoUsuario[];
   message?: string;
+}
+
+interface DecodedToken {
+  sub: string;
+  tipoUsuarios: TipoUsuario[];
+  exp: number;
+  iat: number;
 }
 
 @Injectable({
@@ -47,22 +55,42 @@ export class AuthService {
     this.checkToken();
   }
 
-  register(data: RegistrationData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, data, { responseType: 'text' })
-      .pipe(catchError(this.handleError));
-  }
-
   login(data: LoginData): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data)
       .pipe(
         tap(response => {
           if (response.token) {
             this.setToken(response.token);
+            const decodedToken = this.getDecodedToken();
           }
         }),
         catchError(this.handleError)
       );
   }
+
+  getDecodedToken(): DecodedToken | null {
+    const token = this.getToken();
+    if (token) {
+      try {
+        return jwtDecode<DecodedToken>(token);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  getTipoUsuarios(): TipoUsuario[] {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken?.tipoUsuarios || [];
+  }
+
+  
+  
+    register(data: RegistrationData): Observable<any> {
+      return this.http.post(`${this.apiUrl}/register`, data, { responseType: 'text' })
+        .pipe(catchError(this.handleError));
+    }
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
@@ -100,7 +128,7 @@ export class AuthService {
       return false;
     }
   }
-
+  
   private checkToken(): void {
     const isLoggedIn = this.isLoggedIn();
     this.isAuthenticatedSubject.next(isLoggedIn);

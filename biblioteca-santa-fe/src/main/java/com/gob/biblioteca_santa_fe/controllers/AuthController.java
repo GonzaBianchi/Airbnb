@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -47,30 +48,28 @@ public class AuthController {
     @Autowired
     private UsuarioServiceImpl usuarioService;
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-            
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtService.generateToken(userDetails, new HashMap<>());
-            
-            Usuario usuario = usuarioService.findByUsername(userDetails.getUsername())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            
-            AuthResponse response = new AuthResponse(token, usuario.getUsername(), usuario.getTipoUsuarios());
-            return ResponseEntity.ok(response); 
-        } catch (BadCredentialsException ex) {
-            AuthResponse errorResponse = new AuthResponse("Credenciales inválidas", null, null);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        } catch (AuthenticationException ex) {
-            AuthResponse errorResponse = new AuthResponse("Error en la autenticación", null, null);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        } catch (Exception ex) {
-            AuthResponse errorResponse = new AuthResponse("Error al iniciar sesión", null, null);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
+public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+    try {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Usuario usuario = usuarioService.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        
+        Map<String, Object> extraClaims = new HashMap<>();
+        String token = jwtService.generateToken(userDetails, usuario.getTipoUsuarios(), extraClaims);
+        
+        AuthResponse response = new AuthResponse(token, usuario.getUsername(), usuario.getTipoUsuarios());
+        return ResponseEntity.ok(response);
+    } catch (BadCredentialsException ex) {
+        AuthResponse errorResponse = new AuthResponse("Credenciales inválidas", null, null);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    } catch (Exception ex) {
+        AuthResponse errorResponse = new AuthResponse("Error al iniciar sesión", null, null);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
+}
     
 
 
