@@ -1,10 +1,4 @@
-body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-  }
-  
-  form {
+form {
     background-color: #fff;
     padding: 2rem;
     border-radius: 8px;
