@@ -135,7 +135,19 @@ export class AuthService {
   public checkToken(): void {
     const isLoggedIn = this.isLoggedIn();
     this.isAuthenticatedSubject.next(isLoggedIn);
+  
+    if (isLoggedIn) {
+      // Verifica si el usuario tiene los roles correctos
+      const roles = this.getTipoUsuarios();
+      const hasRequiredRole = roles.some(
+        tipo => tipo.nombre === 'INQUILINO' || tipo.nombre === 'ANFITRION'
+      );
+      this.isInquilinoOrAnfritionSubject.next(hasRequiredRole);
+    } else {
+      this.isInquilinoOrAnfritionSubject.next(false);
+    }
   }
+  
 
 
   private handleError(error: HttpErrorResponse) {

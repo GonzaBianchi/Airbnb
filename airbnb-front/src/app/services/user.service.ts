@@ -18,6 +18,16 @@ export interface Usuario {
   tipoUsuarios: TipoUsuario[];
 }
 
+export interface EditarUsuarioDTO {
+  username: string;
+  nombre: string;
+  apellido: string;
+  email: string;
+  dni: string;
+  password: string;
+  fecha_nacimiento: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,6 +50,23 @@ export class UserService {
     return this.http.get<Usuario>(`${this.apiUrl}${decodedToken.sub}`).pipe(
       catchError(this.handleError)
     );
+  }
+
+  modificarUsuario(datosUsuario: EditarUsuarioDTO): Observable<any> {
+    const username = this.authService.getDecodedToken()?.sub;
+    
+    if (!username) {
+      return throwError(() => new Error('No se encontró el token de usuario'));
+    }
+
+    return this.http.put(`${this.apiUrl}modificar`, datosUsuario, { responseType: 'text' })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = 'Error al modificar el usuario';
+          console.error('Error detallado:', error); // Para debugging
+          return throwError(() => errorMessage); // Cambiado aquí
+        })
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

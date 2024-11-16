@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Data
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class EditarUsuarioDTO {
     @Email(message = "mail debe ser valido")
     @NotBlank(message = "se debe ingresar mail")
     private String email;
-    
+
     @NotBlank(message = "se debe ingresar un nombre")
     private String nombre;
 
@@ -31,10 +32,9 @@ public class EditarUsuarioDTO {
     @Pattern(regexp = "\\d{8}", message = "dni de 8 digitos")
     private String dni;
 
-    @NotBlank(message = "se debe ingresar contraseña")
+    // @NotBlank(message = "se debe ingresar contraseña")
     private String password;
 
     private LocalDate fecha_nacimiento;
-
 
 }

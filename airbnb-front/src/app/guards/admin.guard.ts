@@ -19,7 +19,7 @@ export class AdminGuard implements CanActivate {
       return true;
     }
 
-    return this.router.createUrlTree([''], { queryParams: { returnUrl: state.url } });
+    return this.router.createUrlTree(['/'], { queryParams: { returnUrl: state.url } });
   }
   
 }

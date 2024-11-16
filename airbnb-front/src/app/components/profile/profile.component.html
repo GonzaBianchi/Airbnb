@@ -1,34 +1,132 @@
-<!-- profile.component.html -->
-<div class="container">
-    <div *ngIf="loading" class="text-center">
-      Cargando datos...
-    </div>
-  
-    <div *ngIf="error" class="text-red-500">
-      {{ error }}
-    </div>
-  
-    <div *ngIf="usuario && !loading" class="p-4">
-      <h2 class="text-2xl font-bold mb-4">Perfil de Usuario</h2>
-      
-      <div class="grid gap-4">
-        <div class="border p-4 rounded">
-          <p><strong>Username:</strong> {{ usuario.username }}</p>
-          <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-          <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
-          <p><strong>Email:</strong> {{ usuario.email }}</p>
-          <p><strong>DNI:</strong> {{ usuario.dni }}</p>
-          <p><strong>Fecha de Nacimiento:</strong> {{ usuario.fecha_nacimiento }}</p>
-          
-          <div class="mt-4">
-            <strong>Tipos de Usuario:</strong>
-            <ul class="list-disc ml-4">
-              <li *ngFor="let tipo of usuario.tipoUsuarios">
-                {{ tipo.nombre }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+<div class="container mt-4">
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando datos...</span>
     </div>
   </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="alert alert-success">
+    {{ success }}
+  </div>
+
+  <div *ngIf="usuario && !loading" class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Perfil de Usuario</h2>
+      <button class="btn btn-primary" (click)="toggleEditMode()">
+        {{ editMode ? 'Cancelar' : 'Editar Perfil' }}
+      </button>
+    </div>
+
+    <div class="card-body">
+      <!-- Modo visualización -->
+      <div *ngIf="!editMode">
+        <p><strong>Username:</strong> {{ usuario.username }}</p>
+        <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+        <p><strong>DNI:</strong> {{ usuario.dni }}</p>
+        <p><strong>Fecha de Nacimiento:</strong> {{ usuario.fecha_nacimiento | date:'dd/MM/yyyy' }}</p>
+        
+        <div *ngIf="usuario.tipoUsuarios?.length">
+          <strong>Tipos de Usuario:</strong>
+          <ul>
+            <li *ngFor="let tipo of usuario.tipoUsuarios">
+              {{ tipo.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Modo edición -->
+      <form *ngIf="editMode" [formGroup]="editForm" (ngSubmit)="onSubmit()" class="mt-3">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-control" formControlName="username">
+          <div *ngIf="editForm.get('username')?.errors?.['required'] && editForm.get('username')?.touched" 
+               class="text-danger">
+            El username es requerido
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" formControlName="nombre">
+          <div *ngIf="editForm.get('nombre')?.errors?.['required'] && editForm.get('nombre')?.touched" 
+               class="text-danger">
+            El nombre es requerido
+          </div>
+          <div *ngIf="editForm.get('nombre')?.errors?.['minlength'] && editForm.get('nombre')?.touched" 
+               class="text-danger">
+            El nombre debe tener al menos 2 caracteres
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Apellido</label>
+          <input type="text" class="form-control" formControlName="apellido">
+          <div *ngIf="editForm.get('apellido')?.errors?.['required'] && editForm.get('apellido')?.touched" 
+               class="text-danger">
+            El apellido es requerido
+          </div>
+          <div *ngIf="editForm.get('apellido')?.errors?.['minlength'] && editForm.get('apellido')?.touched" 
+               class="text-danger">
+            El apellido debe tener al menos 2 caracteres
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" formControlName="email">
+          <div *ngIf="editForm.get('email')?.errors?.['required'] && editForm.get('email')?.touched" 
+               class="text-danger">
+            El email es requerido
+          </div>
+          <div *ngIf="editForm.get('email')?.errors?.['email'] && editForm.get('email')?.touched" 
+               class="text-danger">
+            Debe ser un email válido
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">DNI</label>
+          <input type="text" class="form-control" formControlName="dni">
+          <div *ngIf="editForm.get('dni')?.errors?.['required'] && editForm.get('dni')?.touched" 
+               class="text-danger">
+            El DNI es requerido
+          </div>
+          <div *ngIf="editForm.get('dni')?.errors?.['pattern'] && editForm.get('dni')?.touched" 
+               class="text-danger">
+            El DNI debe tener 8 dígitos numéricos
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nueva Contraseña (dejar en blanco para mantener la actual)</label>
+          <input type="password" class="form-control" formControlName="password">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Fecha de Nacimiento</label>
+          <input type="date" class="form-control" formControlName="fecha_nacimiento">
+          <div *ngIf="editForm.get('fecha_nacimiento')?.errors?.['required'] && editForm.get('fecha_nacimiento')?.touched" 
+               class="text-danger">
+            La fecha de nacimiento es requerida
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success" [disabled]="!editForm.valid || loading">
+            {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="toggleEditMode()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -70,22 +72,30 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
+
     @Override
     public void modificarUsuario(EditarUsuarioDTO editarUsuarioDTO, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("No existe el usuario " + username));
+
         usuario.setNombre(editarUsuarioDTO.getNombre());
         usuario.setApellido(editarUsuarioDTO.getApellido());
         usuario.setEmail(editarUsuarioDTO.getEmail());
-        usuario.setPassword(passwordEncoder.encode(editarUsuarioDTO.getPassword()));
+
+        // Solo actualizar la contraseña si se proporciona una nueva
+        if (editarUsuarioDTO.getPassword() != null && !editarUsuarioDTO.getPassword().trim().isEmpty()) {
+            usuario.setPassword(passwordEncoder.encode(editarUsuarioDTO.getPassword()));
+        }
+        // Si no se proporciona contraseña, se mantiene la existente
+
         usuario.setFecha_nacimiento(editarUsuarioDTO.getFecha_nacimiento());
-        usuario.setFecha_modificacion(LocalDate.now());
+        usuario.setFecha_modificacion(Instant.now());
         usuario.setDni(editarUsuarioDTO.getDni());
         usuario.setUsername(editarUsuarioDTO.getUsername());
-        
 
         usuarioRepository.save(usuario);
     }
+
     @Override
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);

@@ -9,7 +9,6 @@
       <a routerLink="/profile">Perfil de Usuario</a>
     </ng-container>
     <ng-container *ngIf="(authService.isAuthenticated$ | async)">
-
       <button (click)="logout()">Logout</button>
     </ng-container>
     

@@ -50,7 +50,7 @@ public class Usuario implements UserDetails {
     private Instant fecha_creacion;
 
     @Column(name = "fecha_modificacion")
-    private LocalDate fecha_modificacion;
+    private Instant fecha_modificacion;
 
     @Column(name = "fecha_nacimiento")
     private LocalDate fecha_nacimiento;
@@ -60,11 +60,7 @@ public class Usuario implements UserDetails {
     // private TipoUsuario tipoUsuario;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "usuario_tipo_usuario",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario")
-    )
+    @JoinTable(name = "usuario_tipo_usuario", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario"))
     private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
     // public enum TipoUsuario {
     // INQUILINO, ANFITRION, ADMINISTRADOR
@@ -79,7 +75,7 @@ public class Usuario implements UserDetails {
         for (TipoUsuario tipoUsuario : tipoUsuarios) {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.getNombre()));
         }
-        System.out.println("authorities: "+ authorities);
+        System.out.println("authorities: " + authorities);
         return authorities;
     }
 

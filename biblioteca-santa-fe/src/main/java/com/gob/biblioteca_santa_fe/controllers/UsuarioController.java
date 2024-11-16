@@ -18,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -33,17 +31,19 @@ public class UsuarioController {
         List<Usuario> usuarios = usuarioService.findAll();
         return ResponseEntity.ok(usuarios);
     }
+
     @GetMapping("/{username}")
     public ResponseEntity<Optional<Usuario>> getUserByUsername(@PathVariable String username) {
 
         return ResponseEntity.ok(usuarioService.findByUsername(username));
-        
+
     }
 
     @PostMapping("/crear")
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.crearUsuario(usuario));
     }
+
     @PutMapping("/modificar")
     public ResponseEntity<String> modificarUser(@Validated @RequestBody EditarUsuarioDTO editarUsuarioDTO,
             @AuthenticationPrincipal UserDetails userDetails) {
@@ -63,4 +63,3 @@ public class UsuarioController {
         return ResponseEntity.ok("usuario modificado exitosamente");
     }
 }
-
