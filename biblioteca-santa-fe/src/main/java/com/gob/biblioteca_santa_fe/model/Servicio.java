@@ -20,4 +20,7 @@ public class Servicio {
 
     @Column(length = 50)
     private String nombre;
+
+    @Column(name = "borrado")
+    private boolean borrado;
 }

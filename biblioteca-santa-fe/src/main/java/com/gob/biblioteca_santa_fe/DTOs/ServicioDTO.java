@@ -9,4 +9,6 @@ public class ServicioDTO {
 
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
+
+    private boolean borrado;
 }

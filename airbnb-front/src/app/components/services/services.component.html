@@ -1,0 +1,68 @@
+<div class="container">
+    <h2>Servicios</h2>
+  
+    <button class="btn btn-primary mb-3" (click)="abrirFormularioCrear()">
+      Crear Nuevo Servicio
+    </button>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let servicio of servicios">
+          <td>{{ servicio.id }}</td>
+          <td>{{ servicio.nombre }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" (click)="abrirFormularioEditar(servicio)">
+              Editar
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="borrarServicio(servicio.id!)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Formulario Modal -->
+    <div *ngIf="mostrarFormulario" class="modal" style="display: block;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              {{ esEdicion ? 'Editar' : 'Crear' }} Servicio
+            </h5>
+            <button type="button" class="btn-close" (click)="cancelar()"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="guardarServicio()">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nombre" 
+                  [(ngModel)]="nuevoServicio.nombre" 
+                  name="nombre" 
+                  required
+                >
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cancelar()">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="!nuevoServicio.nombre">
+                  {{ esEdicion ? 'Actualizar' : 'Crear' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

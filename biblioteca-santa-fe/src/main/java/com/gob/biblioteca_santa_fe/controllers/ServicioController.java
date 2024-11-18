@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,13 +83,13 @@ public class ServicioController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-    @DeleteMapping("/{id}")
+    @PutMapping("/borrar/{id}")
     public ResponseEntity<?> borrarServicio(@PathVariable Long id) {
         System.out.println("Accessing /api/servicios/{id} DELETE endpoint");
         try {
             Servicio servicioEliminado = servicioService.borrarServicio(id);
 
-            if (servicioEliminado != null) {
+            if (servicioEliminado.isBorrado()) {
                 return ResponseEntity.ok("Servicio eliminado con éxito");
             } else {
                 return ResponseEntity.notFound().build();
