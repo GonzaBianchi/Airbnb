@@ -7,11 +7,10 @@ export interface Lodging {
   id?: number;
   descripcion: string;
   imagen: string;
-  precioPorNoche: number;
-  ciudad: number; // O usar id_ciudad
-  tipoHospedaje: number; // O usar id_tipo_hospedaje
+  precio_por_noche: number;
+  id_ciudad?: number;  // Cambiar 'ciudad' a 'id_ciudad'
+  id_tipo_hospedaje?: number;  // Cambiar 'tipoHospedaje' a 'id_tipo_hospedaje'
   servicios: { id: number }[];
-  borrado?: boolean;
 }
 
 
@@ -27,8 +26,8 @@ export class LodgingService {
     return this.http.get<Lodging[]>(`${this.apiUrl}/mis-hospedajes`);
   }
 
-  crearHospedaje(lodging: Lodging): Observable<Lodging> {
-    return this.http.post<Lodging>(`${this.apiUrl}/crear`, lodging);
+  crearHospedaje(lodging: Lodging): Observable<any> {
+    return this.http.post(`${this.apiUrl}/crear`, lodging, { responseType: 'text' });
   }
 
   modificarHospedaje(id: number, lodging: Lodging): Observable<Lodging> {

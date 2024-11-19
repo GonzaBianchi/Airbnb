@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-11-2024 a las 20:21:11
+-- Tiempo de generación: 19-11-2024 a las 21:13:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -153,15 +153,19 @@ CREATE TABLE `hospedaje` (
   `fecha_creacion` datetime NOT NULL,
   `fecha_modificacion` date DEFAULT NULL,
   `id_tipo_hospedaje` int(11) NOT NULL,
-  `id_ciudad` int(11) NOT NULL
+  `id_ciudad` int(11) NOT NULL,
+  `id_usuario` bigint(20) DEFAULT NULL,
+  `borrado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `hospedaje`
 --
 
-INSERT INTO `hospedaje` (`id`, `descripcion`, `imagen`, `precio_por_noche`, `fecha_creacion`, `fecha_modificacion`, `id_tipo_hospedaje`, `id_ciudad`) VALUES
-(1, 'Un hotel muy lindo bilbao televisor y cocina.', 'http://ejemplo.com/imagen.jpg', 50.00, '2024-10-31 20:24:08', NULL, 4, 17);
+INSERT INTO `hospedaje` (`id`, `descripcion`, `imagen`, `precio_por_noche`, `fecha_creacion`, `fecha_modificacion`, `id_tipo_hospedaje`, `id_ciudad`, `id_usuario`, `borrado`) VALUES
+(1, 'Un hotel muy lindo bilbao televisor y cocina.', 'http://ejemplo.com/imagen.jpg', 50.00, '2024-10-31 20:24:08', NULL, 4, 17, 5, 0),
+(2, 'Un hotel terriblemente nasheee', 'http://ejemplo22.com/imagen2.jpg', 150.00, '2024-11-18 20:09:26', NULL, 2, 15, 5, 0),
+(3, 'prueba de modificacion', 'http://ejemplo3.com/imagen32.jpg', 332.00, '2024-11-18 20:16:48', '2024-11-18', 1, 3, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -243,24 +247,27 @@ INSERT INTO `reserva` (`id`, `id_hospedaje`, `id_usuario`, `fecha_check_in`, `fe
 
 CREATE TABLE `servicio` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL
+  `nombre` varchar(50) NOT NULL,
+  `borrado` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `servicio`
 --
 
-INSERT INTO `servicio` (`id`, `nombre`) VALUES
-(1, 'Wifi'),
-(2, 'Cocina'),
-(3, 'Lavarropas'),
-(4, 'Secadora'),
-(5, 'Aire acondicionado'),
-(6, 'Calefacción'),
-(7, 'Zona de trabajo'),
-(8, 'Televisor'),
-(9, 'Secador de pelo'),
-(10, 'Plancha');
+INSERT INTO `servicio` (`id`, `nombre`, `borrado`) VALUES
+(1, 'Wifi', 0),
+(2, 'Cocina', 0),
+(3, 'Lavarropas', 0),
+(4, 'Secadora', 0),
+(5, 'Aire acondicionado', 0),
+(6, 'Calefacción', 0),
+(7, 'Zona de trabajo', 0),
+(8, 'Televisor', 0),
+(9, 'Secador de pelo', 0),
+(10, 'Plancha', 0),
+(13, 'nashi', 0),
+(15, 'Nashe', 1);
 
 -- --------------------------------------------------------
 
@@ -278,7 +285,10 @@ CREATE TABLE `servicio_hospedaje` (
 --
 
 INSERT INTO `servicio_hospedaje` (`id_servicio`, `id_hospedaje`) VALUES
+(1, 3),
 (2, 1),
+(3, 2),
+(5, 2),
 (8, 1);
 
 -- --------------------------------------------------------
@@ -341,7 +351,7 @@ CREATE TABLE `usuario` (
   `apellido` varchar(255) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
   `fecha_creacion` datetime NOT NULL,
-  `fecha_modificacion` date DEFAULT NULL
+  `fecha_modificacion` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -350,7 +360,10 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `dni`, `nombre`, `apellido`, `fecha_nacimiento`, `fecha_creacion`, `fecha_modificacion`) VALUES
 (1, 'osvaldo.cozzi24', 'osvaldocozzi@mail.com', '$2a$10$Tz/yJQ8myI9wXvNCxKoZ1Ozl/DkGfGSTB1Xyd7WdnVJ2pSpZZmH2e', '12345678', 'osvaldo', 'cozzi', '1999-10-24', '2024-10-29 14:03:17', NULL),
-(2, 'gonza.bianch1', 'gonzabianch@mail.com', '$2a$10$m.COtiixh1TBh0GXWNnS3ud372DhKRYQ/aJ.gmERiY0gu5si2u2am', '87654321', 'gonzalo', 'bianchini', '2001-10-24', '2024-10-29 20:40:11', NULL);
+(2, 'gonza.bianch1', 'gonzabianch@mail.com', '$2a$10$m.COtiixh1TBh0GXWNnS3ud372DhKRYQ/aJ.gmERiY0gu5si2u2am', '87654321', 'gonzalo', 'bianchini', '2001-10-24', '2024-10-29 20:40:11', NULL),
+(3, 'gonzibianchi123', 'gonzi@gmail.com', '$2a$10$gQsQhIK6M1v0pvCQz62kH.CayJuXB76dF0AHJMLZT6gTe5mP1zQsC', '99999995', 'gonzia', 'bianchicitoa', '2001-10-12', '2024-11-15 00:24:44', '2024-11-16 04:18:20.000000'),
+(4, 'gonzitabian', 'chici@gmail.com', '$2a$10$33DRh30jjVWk9lB0o2axTuStG7W19k6aYJpWlKUv04MrjSL3/oF2m', '99999998', 'gonzalito', 'chicito', '2002-10-12', '2024-11-15 00:39:40', NULL),
+(5, 'zalito123', 'zalito123@gmail.com', '$2a$10$HO4VpPhDRcMkJvCcSh1AnO3u6abTxY7GcEp2CDkOQc96HhCN4E9/O', '99999997', 'zalitos', 'zalitoz', '2003-10-12', '2024-11-15 00:49:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -369,9 +382,14 @@ CREATE TABLE `usuario_tipo_usuario` (
 
 INSERT INTO `usuario_tipo_usuario` (`id_tipo_usuario`, `id_usuario`) VALUES
 (1, 2),
+(1, 3),
 (2, 1),
 (2, 2),
-(3, 2);
+(2, 4),
+(2, 5),
+(3, 2),
+(3, 4),
+(3, 5);
 
 --
 -- Índices para tablas volcadas
@@ -390,7 +408,8 @@ ALTER TABLE `ciudad`
 ALTER TABLE `hospedaje`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_tipo_hospedaje` (`id_tipo_hospedaje`),
-  ADD KEY `id_ciudad` (`id_ciudad`);
+  ADD KEY `id_ciudad` (`id_ciudad`),
+  ADD KEY `fk_id_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `pais`
@@ -459,7 +478,7 @@ ALTER TABLE `ciudad`
 -- AUTO_INCREMENT de la tabla `hospedaje`
 --
 ALTER TABLE `hospedaje`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `pais`
@@ -477,7 +496,7 @@ ALTER TABLE `reserva`
 -- AUTO_INCREMENT de la tabla `servicio`
 --
 ALTER TABLE `servicio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_hospedaje`
@@ -495,7 +514,7 @@ ALTER TABLE `tipo_usuario`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
@@ -511,6 +530,7 @@ ALTER TABLE `ciudad`
 -- Filtros para la tabla `hospedaje`
 --
 ALTER TABLE `hospedaje`
+  ADD CONSTRAINT `fk_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
   ADD CONSTRAINT `hospedaje_ibfk_1` FOREIGN KEY (`id_tipo_hospedaje`) REFERENCES `tipo_hospedaje` (`id`),
   ADD CONSTRAINT `hospedaje_ibfk_2` FOREIGN KEY (`id_ciudad`) REFERENCES `ciudad` (`id`);
 

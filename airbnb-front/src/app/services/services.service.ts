@@ -35,6 +35,6 @@ export class ServicesService {
   }
 
   getServicioPorNombre(nombre: string): Observable<Services> {
-    return this.http.get<Services>(`${this.apiUrl}${nombre}`);
+    return this.http.get<Services>(`${this.apiUrl}/${nombre}`);
   }
 }
