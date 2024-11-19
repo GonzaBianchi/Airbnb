@@ -1,40 +1,41 @@
-import { HttpClient } from '@angular/common/http';
+// src/app/services/lodging.service.ts
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Hospedajes {
+export interface Lodging {
   id?: number;
-  nombre: string;
+  descripcion: string;
+  imagen: string;
+  precioPorNoche: number;
+  ciudad: number; // O usar id_ciudad
+  tipoHospedaje: number; // O usar id_tipo_hospedaje
+  servicios: { id: number }[];
   borrado?: boolean;
 }
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LodgingService {
-  private apiUrl = 'http://localhost:8080/api/hospedajes';
+  private apiUrl = `http://localhost:8080/api/hospedajes`;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
-  getHospedajes(): Observable<Hospedajes[]> {
-    return this.http.get<Hospedajes[]>(this.apiUrl);
+  getMisHospedajes(): Observable<Lodging[]> {
+    return this.http.get<Lodging[]>(`${this.apiUrl}/mis-hospedajes`);
   }
 
-  crearHospedaje(hospedaje: Hospedajes): Observable<Hospedajes> {
-    return this.http.post<Hospedajes>(`${this.apiUrl}/crear`, hospedaje);
+  crearHospedaje(lodging: Lodging): Observable<Lodging> {
+    return this.http.post<Lodging>(`${this.apiUrl}/crear`, lodging);
   }
 
-  modificarHospedaje(id: number, hospedaje: Hospedajes): Observable<Hospedajes> {
-    return this.http.put<Hospedajes>(`${this.apiUrl}/${id}`, hospedaje);
+  modificarHospedaje(id: number, lodging: Lodging): Observable<Lodging> {
+    return this.http.put<Lodging>(`${this.apiUrl}/modificar/${id}`, lodging);
   }
 
-  borrarHospedaje(id: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/borrar/${id}`, {}, { responseType: 'text' });
-  }
-
-  gethospedajePorNombre(nombre: string): Observable<Hospedajes> {
-    return this.http.get<Hospedajes>(`${this.apiUrl}${nombre}`);
+  eliminarHospedaje(id: number): Observable<Lodging> {
+    return this.http.put<Lodging>(`${this.apiUrl}/eliminar/${id}`, {});
   }
 }

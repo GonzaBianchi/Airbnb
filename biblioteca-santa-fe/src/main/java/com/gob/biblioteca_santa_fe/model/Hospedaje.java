@@ -53,10 +53,17 @@ public class Hospedaje {
     private Ciudad ciudad;
 
     @OneToMany(mappedBy = "hospedaje", fetch = FetchType.LAZY)
-    @JsonIgnore 
+    @JsonIgnore
     private Set<Reserva> reservas;
 
     @ManyToMany
     @JoinTable(name = "servicio_hospedaje", joinColumns = @JoinColumn(name = "ID_HOSPEDAJE"), inverseJoinColumns = @JoinColumn(name = "ID_SERVICIO"))
     private Set<Servicio> servicios;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
+    @Column(name = "borrado")
+    private boolean borrado;
 }

@@ -1,1 +1,120 @@
-<p>lodging works!</p>
+<div class="container">
+  <h1>Gestión de Hospedajes</h1>
+
+  <!-- Botón para agregar un nuevo hospedaje -->
+  <button (click)="mostrarFormulario = true" class="btn btn-primary">
+    Agregar Hospedaje
+  </button>
+
+  <!-- Lista de hospedajes -->
+  <div *ngIf="misHospedajes.length > 0; else noHospedajes">
+    <h2>Mis Hospedajes</h2>
+    <div *ngFor="let hospedaje of misHospedajes" class="hospedaje-item">
+      <h3>{{ hospedaje.descripcion }}</h3>
+      <img [src]="hospedaje.imagen" alt="Imagen del hospedaje" class="hospedaje-imagen" />
+      <p>Precio por Noche: {{ hospedaje.precioPorNoche | currency }}</p>
+      <p>Ciudad: {{ ciudades.find(ciudad => ciudad.id === hospedaje.ciudad)?.nombre }}</p>
+      <p>Tipo de Hospedaje: {{ tiposHospedaje.find(tipo => tipo.id === hospedaje.tipoHospedaje)?.nombre }}</p>
+      <p>Servicios: 
+        <span *ngFor="let servicio of hospedaje.servicios">
+          {{ servicios.find(s => s.id === servicio.id)?.nombre }},
+        </span>
+      </p>
+      <!-- Botones para editar y eliminar -->
+      <button (click)="editarHospedaje(hospedaje)" class="btn btn-secondary">Editar</button>
+      <button (click)="eliminarHospedaje(hospedaje.id)" class="btn btn-danger">Eliminar</button>
+    </div>
+  </div>
+
+  <!-- Mostrar mensaje si no hay hospedajes -->
+  <ng-template #noHospedajes>
+    <p>No tienes hospedajes registrados.</p>
+  </ng-template>
+
+  <!-- Formulario de creación o edición de hospedajes -->
+  <div *ngIf="mostrarFormulario">
+    <h2 *ngIf="editando">Editar Hospedaje</h2>
+    <h2 *ngIf="!editando">Crear Nuevo Hospedaje</h2>
+    <form (ngSubmit)="guardarHospedaje()">
+      <div>
+        <label for="descripcion">Descripción:</label>
+        <input
+          type="text"
+          id="descripcion"
+          [(ngModel)]="lodgingForm.descripcion"
+          name="descripcion"
+          required
+        />
+      </div>
+      <div>
+        <label for="imagen">Imagen (URL):</label>
+        <input
+          type="text"
+          id="imagen"
+          [(ngModel)]="lodgingForm.imagen"
+          name="imagen"
+          required
+        />
+      </div>
+      <div>
+        <label for="precio">Precio por Noche:</label>
+        <input
+          type="number"
+          id="precio"
+          [(ngModel)]="lodgingForm.precioPorNoche"
+          name="precio"
+          required
+        />
+      </div>
+      <div>
+        <label for="pais">País:</label>
+        <select
+          id="pais"
+          [(ngModel)]="selectedPais"
+          name="pais"
+          (change)="cargarCiudades(selectedPais)"
+        >
+          <option *ngFor="let pais of paises" [value]="pais.id">{{ pais.nombre }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="ciudad">Ciudad:</label>
+        <select
+          id="ciudad"
+          [(ngModel)]="lodgingForm.id_ciudad"
+          name="ciudad"
+        >
+          <option *ngFor="let ciudad of ciudades" [value]="ciudad.id">{{ ciudad.nombre }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="tipoHospedaje">Tipo de Hospedaje:</label>
+        <select
+          id="tipoHospedaje"
+          [(ngModel)]="lodgingForm.id_tipo_hospedaje"
+          name="tipoHospedaje"
+        >
+          <option *ngFor="let tipo of tiposHospedaje" [value]="tipo.id">{{ tipo.nombre }}</option>
+        </select>
+      </div>
+      <div>
+        <label>Servicios:</label>
+        <div *ngFor="let servicio of servicios">
+          <input
+            type="checkbox"
+            [value]="servicio.id"
+            (change)="
+              $event.target.checked
+                ? selectedServicios.push(servicio.id)
+                : (selectedServicios = selectedServicios.filter(id => id !== servicio.id))
+            "
+            [checked]="selectedServicios.includes(servicio.id)"
+          />
+          {{ servicio.nombre }}
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success">{{ editando ? 'Guardar Cambios' : 'Crear Hospedaje' }}</button>
+      <button type="button" (click)="cancelarEdicion()" class="btn btn-secondary">Cancelar</button>
+    </form>
+  </div>
+</div>
