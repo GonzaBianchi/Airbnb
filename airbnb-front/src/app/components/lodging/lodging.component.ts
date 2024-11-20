@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Lodging, LodgingService } from 'src/app/services/lodging.service';
+import { LodgingRequest, LodgingResponse, LodgingService } from 'src/app/services/lodging.service';
 import { CountrycityService, Ciudad, Pais } from 'src/app/services/countrycity.service';
 import { LodgingtypeService, LodgingType } from 'src/app/services/lodgingtype.service';
 import { ServicesService, Services } from 'src/app/services/services.service';
@@ -10,15 +10,8 @@ import { ServicesService, Services } from 'src/app/services/services.service';
   styleUrls: ['./lodging.component.css'],
 })
 export class LodgingComponent implements OnInit {
-  misHospedajes: Lodging[] = [];
-  mostrarFormularioCrear = false;
-  mostrarFormularioEditar = false;
-  paises: Pais[] = [];
-  ciudadesDelPais: Ciudad[] = [];
-  tiposHospedaje: LodgingType[] = [];
-  servicios: Services[] = [];
-  
-  nuevoHospedaje: Lodging = {
+  misHospedajes: LodgingResponse[] = [];
+  nuevoHospedaje: LodgingRequest = {
     descripcion: '',
     imagen: '',
     precio_por_noche: 0,
@@ -26,8 +19,15 @@ export class LodgingComponent implements OnInit {
     id_tipo_hospedaje: 0,
     servicios: [],
   };
+  mostrarFormularioCrear = false;
+  mostrarFormularioEditar = false;
+  paises: Pais[] = [];
+  ciudadesDelPais: Ciudad[] = [];
+  tiposHospedaje: LodgingType[] = [];
+  servicios: Services[] = [];
+  paisSeleccionadoId: number = 0;
   
-  hospedajeAEditar: Lodging | null = null;
+  hospedajeAEditar: LodgingRequest | null = null;
 
   constructor(
     private lodgingService: LodgingService,
@@ -87,7 +87,6 @@ export class LodgingComponent implements OnInit {
 
   actualizarServicios(event: any, servicioId?: number): void {
     const checked = event.target.checked;
-    
     // Only proceed if servicioId is defined
     if (servicioId !== undefined) {
       if (checked) {
@@ -97,9 +96,7 @@ export class LodgingComponent implements OnInit {
         }
       } else {
         // Remove service if unchecked
-        this.nuevoHospedaje.servicios = this.nuevoHospedaje.servicios.filter(
-          (servicio) => servicio.id !== servicioId
-        );
+        this.nuevoHospedaje.servicios = this.nuevoHospedaje.servicios.filter((servicio) => servicio.id !== servicioId);
       }
     }
   }
@@ -123,12 +120,12 @@ export class LodgingComponent implements OnInit {
     }
   
     // Preparar el objeto para enviar
-    const hospedajeParaEnviar: Lodging = {
+    const hospedajeParaEnviar: LodgingRequest = {
       descripcion: this.nuevoHospedaje.descripcion.trim(),
       imagen: this.nuevoHospedaje.imagen.trim(),
       precio_por_noche: Number(this.nuevoHospedaje.precio_por_noche),
-      id_ciudad: this.nuevoHospedaje.id_ciudad,
-      id_tipo_hospedaje: this.nuevoHospedaje.id_tipo_hospedaje,
+      id_ciudad: Number(this.nuevoHospedaje.id_ciudad),
+      id_tipo_hospedaje: Number(this.nuevoHospedaje.id_tipo_hospedaje),
       servicios: this.nuevoHospedaje.servicios
     };
   
@@ -137,14 +134,14 @@ export class LodgingComponent implements OnInit {
     this.lodgingService.crearHospedaje(hospedajeParaEnviar).subscribe({
       next: (hospedajeCreado) => {
         console.log('Hospedaje creado exitosamente', hospedajeCreado);
-        this.misHospedajes.push(hospedajeCreado);
+        this.cargarMisHospedajes();
         this.mostrarFormularioCrear = false;
         this.resetearFormulario();
       },
       error: (error) => {
         console.error('Error al crear hospedaje', error);
         // Opcional: Mostrar mensaje de error al usuario
-        this.mostrarMensajeError(error);
+        this.mostrarMensajeError(error.error);
       }
     });
   }
@@ -168,7 +165,7 @@ export class LodgingComponent implements OnInit {
       return false;
     }
   
-    // Validar tipo de hospedaje
+    // Validate lodging type
     if (!this.nuevoHospedaje.id_tipo_hospedaje || this.nuevoHospedaje.id_tipo_hospedaje === 0) {
       this.mostrarMensajeError('Seleccione un tipo de hospedaje');
       return false;
@@ -187,39 +184,27 @@ export class LodgingComponent implements OnInit {
     alert(mensaje);
   }
   
+  compararPaises(pais1: number, pais2: number): boolean {
+    return pais1 === pais2;
+  }
 
-  editarHospedaje(hospedaje: Lodging): void {
-    // Clonar el hospedaje para evitar modificaciones directas
-    this.hospedajeAEditar = { ...hospedaje };
-    console.log(this.hospedajeAEditar);
+  editarHospedaje(hospedaje: LodgingResponse): void {
     // Cargar ciudades del país de la ciudad del hospedaje
-    // if (hospedaje.id_ciudad) {
-    //   // Primero, obtener el país de la ciudad
-    //   this.ciudadService.getPaises().subscribe({
-    //     next: (paises) => {
-    //       // Encontrar el país correcto
-    //       const paisDelHospedaje = paises.find(pais => 
-    //         pais.id === this.ciudadService.getPaisDeCiudad(hospedaje.id_ciudad!)
-    //       );
-          
-    //       if (paisDelHospedaje) {
-    //         // Cargar ciudades del país
-    //         this.cargarCiudades(paisDelHospedaje.id!);
-    //       }
-    //     },
-    //     error: (error) => console.error('Error al obtener países', error)
-    //   });
-    // }
-    
+    this.paisSeleccionadoId = hospedaje.ciudad.pais.id;
+    this.cargarCiudades(this.paisSeleccionadoId);
+  
+    // Establecer el país seleccionado (esto requiere que agregues una variable al componente)
+    console.log('Seleccionado el país:', this.paisSeleccionadoId);
+  
     // Preparar el nuevoHospedaje con los datos para editar
     this.nuevoHospedaje = {
       id: hospedaje.id,
       descripcion: hospedaje.descripcion,
       imagen: hospedaje.imagen,
       precio_por_noche: hospedaje.precio_por_noche,
-      id_ciudad: hospedaje.id_ciudad,
-      id_tipo_hospedaje: hospedaje.id_tipo_hospedaje,
-      servicios: hospedaje.servicios ? [...hospedaje.servicios] : []
+      id_ciudad: hospedaje.ciudad.id,
+      id_tipo_hospedaje: hospedaje.id_tipo_hospedaje.id,
+      servicios: hospedaje.servicios ? hospedaje.servicios.map(s => ({ id: s.id })) : []
     };
     
     // Abrir formulario de edición
@@ -239,12 +224,12 @@ export class LodgingComponent implements OnInit {
     }
 
     // Preparar el objeto para enviar (similar a crearHospedaje)
-    const hospedajeParaEditar: Lodging = {
+    const hospedajeParaEditar: LodgingRequest = {
       descripcion: this.nuevoHospedaje.descripcion.trim(),
       imagen: this.nuevoHospedaje.imagen.trim(),
       precio_por_noche: Number(this.nuevoHospedaje.precio_por_noche),
-      id_ciudad: this.nuevoHospedaje.id_ciudad,
-      id_tipo_hospedaje: this.nuevoHospedaje.id_tipo_hospedaje,
+      id_ciudad: Number(this.nuevoHospedaje.id_ciudad),
+      id_tipo_hospedaje: Number(this.nuevoHospedaje.id_tipo_hospedaje),
       servicios: this.nuevoHospedaje.servicios
     };
 
@@ -255,12 +240,7 @@ export class LodgingComponent implements OnInit {
       next: (hospedajeModificado) => {
         console.log('Hospedaje modificado exitosamente', hospedajeModificado);
         
-        // Actualizar la lista de hospedajes
-        const index = this.misHospedajes.findIndex(h => h.id === this.nuevoHospedaje.id);
-        if (index !== -1) {
-          // Reemplazar el hospedaje en la lista
-          this.misHospedajes[index] = { ...hospedajeModificado, id: this.nuevoHospedaje.id };
-        }
+        this.cargarMisHospedajes();
         
         // Cerrar formulario y resetear
         this.mostrarFormularioEditar = false;
@@ -299,7 +279,20 @@ export class LodgingComponent implements OnInit {
     this.hospedajeAEditar = null;
   }
 
-  eliminarHospedaje(hospedaje: Lodging): void {
-    console.log('Eliminar hospedaje:', hospedaje);
+  eliminarHospedaje(hospedaje: LodgingResponse): void {
+    const confirmacion = confirm('¿Está seguro de que desea eliminar este hospedaje?');
+    
+    if (confirmacion) {
+      this.lodgingService.eliminarHospedaje(hospedaje.id).subscribe({
+        next: () => {
+          alert('Hospedaje eliminado correctamente');
+          this.cargarMisHospedajes();
+        },
+        error: (error) => {
+          console.error('Error al eliminar hospedaje', error);
+          this.mostrarMensajeError('No se pudo eliminar el hospedaje');
+        }
+      });
+    }
   }
 }

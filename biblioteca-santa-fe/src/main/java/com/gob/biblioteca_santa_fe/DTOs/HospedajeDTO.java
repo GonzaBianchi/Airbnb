@@ -21,7 +21,7 @@ public class HospedajeDTO {
     private Long id;
     private String descripcion;
     private String imagen;
-    private BigDecimal precioPorNoche;
+    private BigDecimal precio_por_noche;
     private Instant fecha_creacion;
     private LocalDateTime fecha_modificacion;
     private Long id_tipo_hospedaje;

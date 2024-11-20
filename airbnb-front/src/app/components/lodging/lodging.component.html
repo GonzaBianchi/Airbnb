@@ -20,9 +20,15 @@
             <h5 class="card-title">Hospedaje #{{ i + 1 }}</h5>
             <p class="card-text">
               <strong>Descripción:</strong> {{ hospedaje.descripcion }}<br>
-              <strong>Precio por Noche:</strong> ${{ hospedaje.precio_por_noche }}
+              <strong>Ubicación:</strong> {{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}<br>
+              <strong>Precio por Noche:</strong> ${{ hospedaje.precio_por_noche }}<br>
+              <strong>Tipo de Hospedaje:</strong> {{ hospedaje.id_tipo_hospedaje.nombre }}<br>
+              <strong>Servicios:</strong> 
+              <span *ngFor="let servicio of hospedaje.servicios; let last = last">
+                {{ servicio.nombre }}{{ !last ? ', ' : '' }}
+              </span>
             </p>
-  
+      
             <div class="d-flex justify-content-between">
               <button class="btn btn-warning" (click)="editarHospedaje(hospedaje)">
                 Editar
@@ -92,29 +98,29 @@
               <div class="form-group">
                 <label>Ciudad</label>
                 <select 
-                    class="form-control" 
-                    [(ngModel)]="nuevoHospedaje.id_ciudad" 
-                    name="id_ciudad" 
-                    required
+                  class="form-control" 
+                  [(ngModel)]="nuevoHospedaje.id_ciudad" 
+                  name="ciudad" 
+                  required
                 >
-                    <option value="0">Selecciona una ciudad</option>
-                    <option *ngFor="let ciudad of ciudadesDelPais" [value]="ciudad.id">
-                        {{ ciudad.nombre }}
-                    </option>
+                  <option value="0">Selecciona una ciudad</option>
+                  <option *ngFor="let ciudad of ciudadesDelPais" [value]="ciudad.id">
+                      {{ ciudad.nombre }}
+                  </option>
                 </select>
               </div>
   
               <div class="form-group">
                 <label>Tipo de Hospedaje</label>
                 <select 
-                    class="form-control" 
-                    [(ngModel)]="nuevoHospedaje.id_tipo_hospedaje" 
-                    name="id_tipo_hospedaje" 
-                    required
+                  class="form-control" 
+                  [(ngModel)]="nuevoHospedaje.id_tipo_hospedaje" 
+                  name="tipoHospedaje" 
+                  required
                 >
-                    <option *ngFor="let tipo of tiposHospedaje" [value]="tipo.id">
-                        {{ tipo.nombre }}
-                    </option>
+                  <option *ngFor="let tipo of tiposHospedaje" [value]="tipo.id">
+                      {{ tipo.nombre }}
+                  </option>
                 </select>
               </div>
   
@@ -187,9 +193,15 @@
     
                 <div class="form-group">
                   <label>País</label>
-                  <select class="form-control" (change)="paisSeleccionado($event)">
+                  <select 
+                    class="form-control" 
+                    [(ngModel)]="paisSeleccionadoId" 
+                    (change)="paisSeleccionado($event)"
+                    name="paisSeleccionadoId"
+                    [compareWith]="compararPaises"
+                  >
                     <option value="0">Selecciona un país</option>
-                    <option *ngFor="let pais of paises" [value]="pais.id">
+                    <option *ngFor="let pais of paises" [value]="pais.id" [selected]="pais.id === paisSeleccionadoId">
                       {{ pais.nombre }}
                     </option>
                   </select>

@@ -3,13 +3,37 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Lodging {
+export interface LodgingResponse {
+  id: number;
+  descripcion: string;
+  imagen: string;
+  precio_por_noche: number;
+  ciudad: {
+    id: number;
+    nombre: string;
+    pais: {
+      id: number;
+      nombre: string;
+    }
+  };
+  id_tipo_hospedaje: {
+    id: number;
+    nombre: string;
+  };
+  servicios: {
+    id: number;
+    nombre: string;
+    borrado: boolean;
+  }[];
+}
+
+export interface LodgingRequest {
   id?: number;
   descripcion: string;
   imagen: string;
   precio_por_noche: number;
-  id_ciudad?: number;  // Cambiar 'ciudad' a 'id_ciudad'
-  id_tipo_hospedaje?: number;  // Cambiar 'tipoHospedaje' a 'id_tipo_hospedaje'
+  id_ciudad: number;
+  id_tipo_hospedaje: number;
   servicios: { id: number }[];
 }
 
@@ -22,19 +46,19 @@ export class LodgingService {
 
   constructor(private http: HttpClient) {}
 
-  getMisHospedajes(): Observable<Lodging[]> {
-    return this.http.get<Lodging[]>(`${this.apiUrl}/mis-hospedajes`);
+  getMisHospedajes(): Observable<LodgingResponse[]> {
+    return this.http.get<LodgingResponse[]>(`${this.apiUrl}/mis-hospedajes`);
   }
 
-  crearHospedaje(lodging: Lodging): Observable<any> {
+  crearHospedaje(lodging: LodgingRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/crear`, lodging, { responseType: 'text' });
   }
 
-  modificarHospedaje(id: number, lodging: Lodging): Observable<Lodging> {
-    return this.http.put<Lodging>(`${this.apiUrl}/modificar/${id}`, lodging);
+  modificarHospedaje(id: number, lodging: LodgingRequest): Observable<any> {
+    return this.http.put(`${this.apiUrl}/modificar/${id}`, lodging, { responseType: 'text' });
   }
 
-  eliminarHospedaje(id: number): Observable<Lodging> {
-    return this.http.put<Lodging>(`${this.apiUrl}/eliminar/${id}`, {});
+  eliminarHospedaje(id: number): Observable<LodgingRequest> {
+    return this.http.put<LodgingRequest>(`${this.apiUrl}/eliminar/${id}`, {});
   }
 }

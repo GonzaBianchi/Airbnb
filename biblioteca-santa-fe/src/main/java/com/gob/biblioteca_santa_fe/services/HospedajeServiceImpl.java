@@ -92,14 +92,14 @@ public class HospedajeServiceImpl implements HospedajeService {
                 Hospedaje hospedaje = Hospedaje.builder()
                                 .descripcion(hospedajeDTO.getDescripcion())
                                 .imagen(hospedajeDTO.getImagen())
-                                .precio_por_noche(hospedajeDTO.getPrecioPorNoche())
+                                .precio_por_noche(hospedajeDTO.getPrecio_por_noche())
                                 .fecha_creacion(Instant.now())
                                 .ciudad(ciudadCargada)
                                 .id_tipo_hospedaje(tipoHospedajeCargado)
                                 .servicios(serviciosCargados)
                                 .usuario(usuario)
                                 .build();
-
+                                System.out.println("DATOS DE HOSPEDAJE A CREAR: " + hospedaje);
                 return hospedajeRepository.save(hospedaje);
         }
 
@@ -139,7 +139,7 @@ public class HospedajeServiceImpl implements HospedajeService {
 
                 hospedaje.setDescripcion(hospedajeDTO.getDescripcion());
                 hospedaje.setImagen(hospedajeDTO.getImagen());
-                hospedaje.setPrecio_por_noche(hospedajeDTO.getPrecioPorNoche());
+                hospedaje.setPrecio_por_noche(hospedajeDTO.getPrecio_por_noche());
                 hospedaje.setFecha_modificacion(LocalDate.now());
                 hospedaje.setCiudad(ciudadCargada);
                 hospedaje.setId_tipo_hospedaje(tipoHospedajeCargado);
