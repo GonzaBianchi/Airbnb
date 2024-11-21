@@ -1,0 +1,113 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+}
+
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.hero-section {
+    background-color: white;
+    border-radius: 15px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+.hero-title {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+.hero-description {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+}
+.world-image {
+    max-width: 500px;
+    height: auto;
+    margin: 2rem auto;
+    animation: rotate 60s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.features-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 3rem 0;
+}
+.feature {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.feature:hover {
+    transform: scale(1.05);
+}
+.feature-icon {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+.feature-title {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+.feature-description {
+    color: #7f8c8d;
+    line-height: 1.6;
+}
+
+.testimonials-section {
+    background: #b1c3cf;
+    color: rgb(24, 23, 23);
+    padding: 3rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+.testimonials-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+.testimonial {
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    font-style: italic;
+}
+.testimonial-author {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.footer {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+.footer a {
+    color: #3498db;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
