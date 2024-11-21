@@ -32,6 +32,9 @@ public class ReservaServiceImpl implements ReservaService {
     @Autowired
     private HospedajeRepository hospedajeRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
     @Override
     public List<Reserva> findAll() {
         try {
@@ -54,8 +57,7 @@ public class ReservaServiceImpl implements ReservaService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        validarDisponibilidad(hospedaje.getId(), reservaDTO.getFecha_check_in(),
-                reservaDTO.getFecha_check_out());
+        validarDisponibilidad(hospedaje.getId(), reservaDTO.getFecha_check_in(), reservaDTO.getFecha_check_out(), null);
 
         BigDecimal importeTotal = calcularImporteTotal(hospedaje, reservaDTO.getFecha_check_in(),
                 reservaDTO.getFecha_check_out());
@@ -112,7 +114,7 @@ public class ReservaServiceImpl implements ReservaService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         validarDisponibilidad(hospedaje.getId(), reservaDTO.getFecha_check_in(),
-                reservaDTO.getFecha_check_out());
+                reservaDTO.getFecha_check_out(), idReserva);
 
         BigDecimal importeTotal = calcularImporteTotal(hospedaje, reservaDTO.getFecha_check_in(),
                 reservaDTO.getFecha_check_out());
@@ -164,11 +166,15 @@ public class ReservaServiceImpl implements ReservaService {
         return reservaRepository.save(reserva);
     }
 
-    private void validarDisponibilidad(Long idHospedaje, LocalDate fechaCheckIn, LocalDate fechaCheckOut) {
+    private void validarDisponibilidad(Long idHospedaje, LocalDate fechaCheckIn, LocalDate fechaCheckOut,
+            Long idReservaActual) {
         List<Reserva> reservasExistentes = reservaRepository.findReservasEntreFechas(idHospedaje, fechaCheckIn,
                 fechaCheckOut);
 
-        if (!reservasExistentes.isEmpty()) {
+        boolean hayConflicto = reservasExistentes.stream()
+                .anyMatch(reserva -> idReservaActual == null || !reserva.getId().equals(idReservaActual));
+
+        if (hayConflicto) {
             throw new RuntimeException("El hospedaje no está disponible en las fechas seleccionadas");
         }
     }
@@ -177,4 +183,41 @@ public class ReservaServiceImpl implements ReservaService {
         long cantidadNoches = ChronoUnit.DAYS.between(fechaCheckIn, fechaCheckOut);
         return hospedaje.getPrecio_por_noche().multiply(BigDecimal.valueOf(cantidadNoches));
     }
+
+    public List<Reserva> getReservasByUser(String jwt) {
+        String username = jwtService.extractUsername(jwt.substring(7)); // Remove "Bearer "
+
+        // Find user by username
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        LocalDate today = LocalDate.now();
+
+        // Find reservas for the user from today onwards
+        List<Reserva> reservas = reservaRepository.findByUsuarioIdAndFechaCheckInGreaterThanEqual(
+                usuario.getId(),
+                today);
+        if (reservas.isEmpty()) {
+            throw new RuntimeException("El usuario no tiene hospedajes registrados");
+        }
+
+        return reservas;
+    }
+
+    @Override
+    public List<Reserva> getReservasByHospedajeUser(String jwt) {
+        String username = jwtService.extractUsername(jwt.substring(7));
+
+        LocalDate today = LocalDate.now();
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<Reserva> reservas = reservaRepository.findReservasByHospedajeUsuarioId(usuario.getId(), today);
+        if (reservas.isEmpty()) {
+            throw new RuntimeException("El usuario no tiene reservas");
+        }
+
+        return reservas;
+    }
+
 }

@@ -14,6 +14,9 @@ import { MyLodgingComponent } from './components/mylodging/mylodging.component';
 import { AuthInterceptor } from './interceptors/auth';
 import { LodgingsComponent } from './components/lodgings/lodgings.component';
 import { LodgingviewComponent } from './components/lodgingview/lodgingview.component';
+import { BookingComponent } from './components/booking/booking.component';
+import { MybookingsComponent } from './components/mybookings/mybookings.component';
+import { LodgingBookingsComponent } from './components/lodging-bookings/lodging-bookings.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { LodgingviewComponent } from './components/lodgingview/lodgingview.compo
     MyLodgingComponent,
     LodgingsComponent,
     LodgingviewComponent,
+    BookingComponent,
+    MybookingsComponent,
+    LodgingBookingsComponent,
   ],
   imports: [
     BrowserModule,

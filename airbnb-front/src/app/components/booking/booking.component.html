@@ -1,0 +1,30 @@
+<div class="container">
+    <h2>Hacer Reserva</h2>
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Fecha Check-In</label>
+        <input type="date" formControlName="fecha_check_in" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Fecha Check-Out</label>
+        <input type="date" formControlName="fecha_check_out" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Adultos</label>
+        <input type="number" formControlName="cant_adultos" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Niños</label>
+        <input type="number" formControlName="cant_ninos" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Bebés</label>
+        <input type="number" formControlName="cant_bebes" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Mascotas</label>
+        <input type="number" formControlName="cant_mascotas" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="bookingForm.invalid">Reservar</button>
+    </form>
+  </div>

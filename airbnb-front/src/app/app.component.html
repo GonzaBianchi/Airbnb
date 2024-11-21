@@ -1,24 +1,59 @@
-<header>
-  <nav>
-    <a routerLink="/">Home</a>
-    <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
-      <a routerLink="/login">Login</a>
-      <a routerLink="/register">Registrarse</a>
-    </ng-container>
-    <ng-container *ngIf="(authService.isAuthenticated$ | async) && (authService.isInquilinoOrAnfrition$ | async)">
-      <a routerLink="buscar-hospedajes">Buscar hospedajes</a>
-      <a routerLink="/mis-hospedajes">Mis hospedajes</a>
-      <a routerLink="/profile">Mi perfil</a>
-    </ng-container>
-    <ng-container *ngIf="(authService.isAuthenticated$ | async) && !(authService.isInquilinoOrAnfrition$ | async)">
-      <a routerLink="/services">Servicios</a>
-    </ng-container>
-    <ng-container *ngIf="(authService.isAuthenticated$ | async)">
-      <button (click)="logout()">Logout</button>
-    </ng-container>
-    
+<header class="header-container">
+  <div class="logo">
+    <img src="/assets/logo.png" alt="App Logo">
+  </div>
+  <nav class="navbar">
+    <div class="nav-links">
+      <div class="nav-links-center">
+        <a routerLink="" 
+          [routerLinkActive]="['active-link']" 
+          [routerLinkActiveOptions]="{exact: true}" 
+          class="nav-item">
+          <i class="fas fa-home"></i>Inicio
+        </a>
+        <ng-container *ngIf="(authService.isAuthenticated$ | async) && (authService.isInquilinoOrAnfrition$ | async)">
+          <a routerLink="buscar-hospedajes" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-search"></i>Buscar hospedajes
+          </a>
+          <a routerLink="/mis-hospedajes" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-home"></i>Mis hospedajes
+          </a>
+          <a routerLink="/mis-reservas" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-calendar-alt"></i>Mis reservas
+          </a>
+          <a routerLink="/ver-reservas" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-clipboard-list"></i>Control de reservas
+          </a>
+        </ng-container>
+        <ng-container *ngIf="(authService.isAuthenticated$ | async) && !(authService.isInquilinoOrAnfrition$ | async)">
+          <a routerLink="/services" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-tools"></i>Servicios
+          </a>
+        </ng-container>
+      </div>
+      
+      <div class="nav-links-right">
+        <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
+          <a routerLink="/login" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-sign-in-alt"></i>Login
+          </a>
+          <a routerLink="/register" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-user-plus"></i>Registrarse
+          </a>
+        </ng-container>
+        
+        <ng-container *ngIf="(authService.isAuthenticated$ | async)">
+          <a routerLink="/profile" routerLinkActive="active-link" class="nav-item">
+            <i class="fas fa-user"></i>Mi perfil
+          </a>
+          <button (click)="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>Logout
+          </button>
+        </ng-container>
+      </div>
+    </div>
   </nav>
 </header>
-<main>
+<main class="main-content">
   <router-outlet></router-outlet>
 </main>

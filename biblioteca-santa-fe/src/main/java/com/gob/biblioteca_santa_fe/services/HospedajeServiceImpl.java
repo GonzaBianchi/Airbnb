@@ -90,6 +90,7 @@ public class HospedajeServiceImpl implements HospedajeService {
                                                                 + hospedajeDTO.getId_tipo_hospedaje()));
 
                 Hospedaje hospedaje = Hospedaje.builder()
+                                .nombre(hospedajeDTO.getNombre())
                                 .descripcion(hospedajeDTO.getDescripcion())
                                 .imagen(hospedajeDTO.getImagen())
                                 .precio_por_noche(hospedajeDTO.getPrecio_por_noche())
@@ -136,7 +137,7 @@ public class HospedajeServiceImpl implements HospedajeService {
                                 .orElseThrow(() -> new RuntimeException(
                                                 "Tipo de hospedaje no encontrado: "
                                                                 + hospedajeDTO.getId_tipo_hospedaje()));
-
+                hospedaje.setNombre(hospedajeDTO.getNombre());
                 hospedaje.setDescripcion(hospedajeDTO.getDescripcion());
                 hospedaje.setImagen(hospedajeDTO.getImagen());
                 hospedaje.setPrecio_por_noche(hospedajeDTO.getPrecio_por_noche());

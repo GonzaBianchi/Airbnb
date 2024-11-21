@@ -13,6 +13,9 @@ import { ServicesComponent } from './components/services/services.component';
 import { MyLodgingComponent } from './components/mylodging/mylodging.component';
 import { LodgingsComponent } from './components/lodgings/lodgings.component';
 import { LodgingviewComponent } from './components/lodgingview/lodgingview.component';
+import { BookingComponent } from './components/booking/booking.component';
+import { MybookingsComponent } from './components/mybookings/mybookings.component';
+import { LodgingBookingsComponent } from './components/lodging-bookings/lodging-bookings.component';
 
 const routes: Routes = [
   { path: 'login',
@@ -41,6 +44,18 @@ const routes: Routes = [
   },
   { path: 'hospedaje/:id',
     component: LodgingviewComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'reservas/:id', 
+    component: BookingComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'mis-reservas',
+    component: MybookingsComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'ver-reservas',
+    component: LodgingBookingsComponent,
     canActivate: [AuthGuard]
   },
   { path: '', component: HomeComponent },

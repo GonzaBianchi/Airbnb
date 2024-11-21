@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LodgingResponse, LodgingService } from '../../services/lodging.service';
 
 @Component({
@@ -12,7 +12,8 @@ export class LodgingviewComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private lodgingService: LodgingService
+    private lodgingService: LodgingService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -34,7 +35,7 @@ export class LodgingviewComponent implements OnInit{
     });
   }
 
-  reservaHospedaje() {
-    console.log('Reservando hospedaje');
+  reservaHospedaje(hospedajeId: number) {
+    this.router.navigate(['/reservas', hospedajeId]);
   }
 }

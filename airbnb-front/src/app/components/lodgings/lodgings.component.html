@@ -55,7 +55,8 @@
             <div class="card h-100">
               <img [src]="hospedaje.imagen" class="card-img-top" alt="Accommodation Image">
               <div class="card-body">
-                <h5 class="card-title">{{ hospedaje.descripcion }}</h5>
+                <h5 class="card-title">{{ hospedaje.nombre }}</h5>
+                <h6 class="card-title">{{ hospedaje.descripcion }}</h6>
                 <p class="card-text">
                   <strong>{{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}</strong><br>
                   <strong>${{ hospedaje.precio_por_noche }}</strong><br>

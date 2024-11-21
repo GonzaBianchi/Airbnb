@@ -19,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class HospedajeDTO {
     private Long id;
+    private String nombre;
     private String descripcion;
     private String imagen;
     private BigDecimal precio_por_noche;

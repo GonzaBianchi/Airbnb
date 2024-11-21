@@ -4,7 +4,8 @@
         <div class="card">
           <img [src]="hospedaje.imagen" class="card-img-top" alt="Accommodation Image">
           <div class="card-body">
-            <h5 class="card-title">{{ hospedaje.descripcion }}</h5>
+            <h5 class="card-title">{{ hospedaje.nombre }}</h5>
+            <h6 class="card-title">{{ hospedaje.descripcion }}</h6>
             <p class="card-text">
               <strong>{{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}</strong><br>
               <strong>${{ hospedaje.precio_por_noche }}</strong><br>
@@ -17,8 +18,8 @@
             </p>
           </div>
           <div class="d-grid gap-2">
-            <button class="btn btn-warning" (click)="reservaHospedaje()">
-              Resevar
+            <button class="btn btn-warning" (click)="reservaHospedaje(hospedaje.id)">
+              Reservar
             </button>
           </div>
         </div>

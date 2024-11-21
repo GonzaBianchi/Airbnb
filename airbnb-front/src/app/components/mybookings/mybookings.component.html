@@ -1,0 +1,132 @@
+<div class="container">
+    <h2>Mis Reservas</h2>
+    
+    <div *ngIf="loading" class="text-center">
+      <p>Cargando reservas...</p>
+    </div>
+  
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <div *ngIf="!loading && bookings.length === 0" class="alert alert-info">
+      No tienes reservas próximas.
+    </div>
+  
+    <div *ngIf="bookings.length > 0" class="row">
+      <div *ngFor="let booking of bookings; let i = index" 
+           class="col-md-4 mb-3"
+           [ngClass]="{'bg-danger bg-opacity-10': booking.estado === 'Cancelada'}">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Reserva #{{ i + 1 }}</h5>
+            
+            <!-- Modo visualización normal -->
+            <ng-container *ngIf="editingBooking?.id !== booking.id">
+                <p class="card-text">
+                  Hospedaje: {{ booking.hospedaje.nombre }}<br>
+                  Check-In: {{ booking.fecha_check_in }}<br>
+                  Check-Out: {{ booking.fecha_check_out }}<br>
+                  Estado: {{ booking.estado }}<br>
+                  Importe Total: ${{ booking.importe_total }}
+                </p>
+                <div class="d-flex justify-content-between">
+                  <span class="badge" 
+                    [ngClass]="{
+                      'bg-success': booking.estado === 'Confirmada',
+                      'bg-warning': booking.estado === 'Pendiente',
+                      'bg-danger': booking.estado === 'Cancelada'
+                    }">
+                    {{ booking.estado }}
+                  </span>
+                  
+                  <div *ngIf="booking.estado !== 'Cancelada' && !booking.estado.includes('Cancelada')">
+                    <button 
+                      class="btn btn-sm btn-primary me-2"
+                      (click)="modificarReserva(booking)">
+                      Modificar
+                    </button>
+                    <button 
+                      class="btn btn-sm btn-danger"
+                      (click)="cancelarReserva(booking.id)">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            <!-- Modo edición -->
+            <ng-container *ngIf="editingBooking?.id === booking.id">
+              <form>
+                <div class="mb-3">
+                  <label>Fecha Check-In</label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    [(ngModel)]="editingBooking!.fecha_check_in" 
+                    name="fecha_check_in"
+                  >
+                </div>
+                <div class="mb-3">
+                  <label>Fecha Check-Out</label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    [(ngModel)]="editingBooking!.fecha_check_out" 
+                    name="fecha_check_out"
+                  >
+                </div>
+                <div class="mb-3">
+                  <label>Cantidad Adultos</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    [(ngModel)]="editingBooking!.cant_adultos" 
+                    name="cant_adultos"
+                  >
+                </div>
+                <div class="mb-3">
+                  <label>Cantidad Niños</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    [(ngModel)]="editingBooking!.cant_ninos" 
+                    name="cant_ninos"
+                  >
+                </div>
+                <div class="mb-3">
+                  <label>Cantidad Bebés</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    [(ngModel)]="editingBooking!.cant_bebes" 
+                    name="cant_bebes"
+                   >
+                </div>
+                <div class="mb-3">
+                  <label>Cantidad Mascotas</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    [(ngModel)]="editingBooking!.cant_mascotas" 
+                    name="cant_mascotas"
+                  >
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button 
+                    class="btn btn-secondary" 
+                    (click)="cancelarEdicion()">
+                    Cancelar
+                  </button>
+                  <button 
+                    class="btn btn-primary" 
+                    (click)="guardarModificacion()">
+                    Guardar
+                  </button>
+                </div>
+              </form>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

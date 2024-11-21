@@ -12,7 +12,11 @@ public interface ReservaService {
 
     Reserva modificarReserva(ReservaDTO reservaDTO, Long idReserva) throws RuntimeException;
 
+    List<Reserva> getReservasByUser(String jwt) throws RuntimeException;
+
     Reserva confirmarReserva(Long idReserva) throws RuntimeException;
 
     Reserva cancelarReserva(Long idReserva) throws RuntimeException;
+
+    List<Reserva> getReservasByHospedajeUser(String jwt) throws RuntimeException;
 }

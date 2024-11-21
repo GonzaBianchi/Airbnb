@@ -25,4 +25,17 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
         Optional<Reserva> findByHospedajeIdAndUsuarioId(Long hospedajeId, Long usuarioId);
 
+        List<Reserva> findReservasByUsuarioId(Long idUser);
+
+        @Query("SELECT r FROM Reserva r WHERE r.usuario.id = :id AND r.fecha_check_in >= :today")
+        List<Reserva> findByUsuarioIdAndFechaCheckInGreaterThanEqual(@Param("id") Long id,
+                        @Param("today") LocalDate today);
+
+        @Query("SELECT r FROM Reserva r " +
+                        "JOIN r.hospedaje h " +
+                        "WHERE h.usuario.id = :id_usuario " +
+                        "AND r.fecha_check_in >= :today")
+        List<Reserva> findReservasByHospedajeUsuarioId(@Param("id_usuario") Long id_usuario,
+                        @Param("today") LocalDate today);
+
 }

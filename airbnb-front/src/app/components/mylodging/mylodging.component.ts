@@ -12,6 +12,7 @@ import { ServicesService, Services } from 'src/app/services/services.service';
 export class MyLodgingComponent implements OnInit {
   misHospedajes: LodgingResponse[] = [];
   nuevoHospedaje: LodgingRequest = {
+    nombre: '',
     descripcion: '',
     imagen: '',
     precio_por_noche: 0,
@@ -121,6 +122,7 @@ export class MyLodgingComponent implements OnInit {
   
     // Preparar el objeto para enviar
     const hospedajeParaEnviar: LodgingRequest = {
+      nombre: this.nuevoHospedaje.nombre.trim(),
       descripcion: this.nuevoHospedaje.descripcion.trim(),
       imagen: this.nuevoHospedaje.imagen.trim(),
       precio_por_noche: Number(this.nuevoHospedaje.precio_por_noche),
@@ -199,6 +201,7 @@ export class MyLodgingComponent implements OnInit {
     // Preparar el nuevoHospedaje con los datos para editar
     this.nuevoHospedaje = {
       id: hospedaje.id,
+      nombre: hospedaje.nombre,
       descripcion: hospedaje.descripcion,
       imagen: hospedaje.imagen,
       precio_por_noche: hospedaje.precio_por_noche,
@@ -225,6 +228,7 @@ export class MyLodgingComponent implements OnInit {
 
     // Preparar el objeto para enviar (similar a crearHospedaje)
     const hospedajeParaEditar: LodgingRequest = {
+      nombre: this.nuevoHospedaje.nombre.trim(),
       descripcion: this.nuevoHospedaje.descripcion.trim(),
       imagen: this.nuevoHospedaje.imagen.trim(),
       precio_por_noche: Number(this.nuevoHospedaje.precio_por_noche),
@@ -269,6 +273,7 @@ export class MyLodgingComponent implements OnInit {
   // Método para resetear el formulario
   resetearFormulario(): void {
     this.nuevoHospedaje = {
+      nombre: '',
       descripcion: '',
       imagen: '',
       precio_por_noche: 0,

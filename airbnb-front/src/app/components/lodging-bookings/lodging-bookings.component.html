@@ -1,0 +1,73 @@
+<div class="container">
+    <h2>Mis Reservas de Alojamiento</h2>
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p>Cargando reservas...</p>
+    </div>
+  
+    <!-- No Bookings State -->
+    <div *ngIf="!loading && bookings.length === 0" class="alert alert-info text-center">
+      No posees ninguna reserva
+    </div>
+  
+    <!-- Bookings Table -->
+    <table *ngIf="!loading && bookings.length > 0" class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>ID Reserva</th>
+          <th>Alojamiento</th>
+          <th>Check-In</th>
+          <th>Check-Out</th>
+          <th>Adultos</th>
+          <th>Niños</th>
+          <th>Bebés</th>
+          <th>Mascotas</th>
+          <th>Importe Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings" 
+            [ngClass]="{'table-danger': booking.estado === 'Cancelada'}">
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.hospedaje.nombre }}</td>
+          <td>{{ booking.fecha_check_in }}</td>
+          <td>{{ booking.fecha_check_out }}</td>
+          <td>{{ booking.cant_adultos }}</td>
+          <td>{{ booking.cant_ninos }}</td>
+          <td>{{ booking.cant_bebes }}</td>
+          <td>{{ booking.cant_mascotas }}</td>
+          <td>${{ booking.importe_total }}</td>
+          <td>
+            <span class="badge" 
+              [ngClass]="{
+                'bg-success': booking.estado === 'Confirmada',
+                'bg-warning': booking.estado === 'Pendiente',
+                'bg-danger': booking.estado === 'Cancelada'
+              }">
+              {{ booking.estado }}
+            </span>
+          </td>
+          <td>
+            <div *ngIf="booking.estado !== 'Cancelada'" class="btn-group">
+              <button 
+                class="btn btn-sm btn-primary"
+                (click)="confirmarReserva(booking.id)">
+                Confirmar
+              </button>
+              <button 
+                class="btn btn-sm btn-danger"
+                (click)="cancelarReserva(booking.id)">
+                Cancelar
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -29,6 +29,9 @@ public class Hospedaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nombre")
+    private String nombre;
+
     @Column(length = 100)
     private String descripcion;
 

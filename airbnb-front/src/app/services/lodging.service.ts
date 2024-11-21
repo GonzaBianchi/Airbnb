@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 export interface LodgingResponse {
   id: number;
+  nombre: string;
   descripcion: string;
   imagen: string;
   precio_por_noche: number;
@@ -29,6 +30,7 @@ export interface LodgingResponse {
 
 export interface LodgingRequest {
   id?: number;
+  nombre: string;
   descripcion: string;
   imagen: string;
   precio_por_noche: number;

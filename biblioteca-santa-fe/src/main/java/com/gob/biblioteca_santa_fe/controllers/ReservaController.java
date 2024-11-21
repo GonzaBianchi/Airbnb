@@ -1,7 +1,11 @@
 package com.gob.biblioteca_santa_fe.controllers;
 
 import com.gob.biblioteca_santa_fe.DTOs.ReservaDTO;
+import com.gob.biblioteca_santa_fe.model.Reserva;
 import com.gob.biblioteca_santa_fe.services.ReservaServiceImpl;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +50,18 @@ public class ReservaController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_INQUILINO', 'ROLE_ANFITRION')")
+    @GetMapping("/mis-reservas")
+    public ResponseEntity<?> getReservasByUser(@RequestHeader("Authorization") String jwt) {
+        try {
+            List<Reserva> reservas = reservaService.getReservasByUser(jwt);
+            return ResponseEntity.ok(reservas);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener las reservas: " + e.getMessage());
+        }
+    }
+
     @PreAuthorize("hasRole('ROLE_ANFITRION')")
     @PutMapping("/confirmar/{idReserva}")
     public ResponseEntity<?> confirmarReserva(
@@ -75,4 +91,17 @@ public class ReservaController {
                     .body("Error al cancelar la reserva: " + e.getMessage());
         }
     }
+
+    @PreAuthorize("hasRole('ROLE_ANFITRION')")
+    @GetMapping("/ver-reservas")
+    public ResponseEntity<?> verReservasAnfitrion(@RequestHeader("Authorization") String jwt) {
+        try {
+            List<Reserva> reservas = reservaService.getReservasByHospedajeUser(jwt);
+            return ResponseEntity.ok(reservas);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener las reservas: " + e.getMessage());
+        }
+    }
+
 }
