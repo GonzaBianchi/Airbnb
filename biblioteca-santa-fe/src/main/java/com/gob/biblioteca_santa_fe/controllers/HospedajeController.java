@@ -63,6 +63,17 @@ public class HospedajeController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ANFITRION') or hasRole('ROLE_INQUILINO')")
+    @GetMapping("/ver/{id}")
+    public ResponseEntity<?> getHospedaje(@PathVariable Long id) {
+        try {
+            Hospedaje hospedaje = hospedajeService.findById(id);
+            return ResponseEntity.ok(hospedaje);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @PreAuthorize("hasRole('ROLE_ANFITRION')")
     @PostMapping("/crear")
     public ResponseEntity<String> crearHospedaje(

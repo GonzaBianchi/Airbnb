@@ -13,6 +13,7 @@ import { ServicesComponent } from './components/services/services.component';
 import { MyLodgingComponent } from './components/mylodging/mylodging.component';
 import { AuthInterceptor } from './interceptors/auth';
 import { LodgingsComponent } from './components/lodgings/lodgings.component';
+import { LodgingviewComponent } from './components/lodgingview/lodgingview.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { LodgingsComponent } from './components/lodgings/lodgings.component';
     ServicesComponent,
     MyLodgingComponent,
     LodgingsComponent,
+    LodgingviewComponent,
   ],
   imports: [
     BrowserModule,

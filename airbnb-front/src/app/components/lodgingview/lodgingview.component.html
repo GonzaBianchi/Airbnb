@@ -1,0 +1,27 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        <div class="card">
+          <img [src]="hospedaje.imagen" class="card-img-top" alt="Accommodation Image">
+          <div class="card-body">
+            <h5 class="card-title">{{ hospedaje.descripcion }}</h5>
+            <p class="card-text">
+              <strong>{{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}</strong><br>
+              <strong>${{ hospedaje.precio_por_noche }}</strong><br>
+              <strong>{{ hospedaje.id_tipo_hospedaje.nombre }}</strong><br>
+              <strong>
+                <span *ngFor="let servicio of hospedaje.servicios; let last = last">
+                  {{ servicio.nombre }}{{ !last ? ', ' : '' }}
+                </span>
+              </strong>
+            </p>
+          </div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-warning" (click)="reservaHospedaje()">
+              Resevar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

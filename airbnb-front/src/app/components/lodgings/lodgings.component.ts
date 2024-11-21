@@ -5,6 +5,7 @@ import { LodgingService, LodgingResponse, FiltroHospedaje } from '../../services
 import { CountrycityService, Pais, Ciudad } from '../../services/countrycity.service';
 import { ServicesService, Services } from '../../services/services.service';
 import { LodgingtypeService, LodgingType } from '../../services/lodgingtype.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lodgings',
@@ -26,7 +27,8 @@ export class LodgingsComponent implements OnInit{
     private lodgingService: LodgingService,
     private paisCiudadService: CountrycityService,
     private serviciosService: ServicesService,
-    private tipoHospedajeService: LodgingtypeService
+    private tipoHospedajeService: LodgingtypeService,
+    private router: Router
   ) {
     this.filterForm = this.fb.group({
       pais: [''],
@@ -48,16 +50,17 @@ export class LodgingsComponent implements OnInit{
 
   cargarTodosHospedajes() {
     this.cargando = true;
-    this.lodgingService.getAll().subscribe(
-      hospedajes => {
-        this.hospedajesFiltered = hospedajes;
-        this.cargando = false;
-      },
-      error => {
-        console.error('Error al cargar hospedajes', error);
-        this.cargando = false;
-      }
-    );
+    this.lodgingService.getAll().subscribe({
+      next: (hospedajes) => (
+        this.hospedajesFiltered = hospedajes,
+        console.log('Cargando hospedajes', this.hospedajesFiltered),
+        this.cargando = false
+      ),
+      error: (error) => (
+        console.error('Error al cargar hospedajes', error),
+        this.cargando = false
+      )
+    });
   }
 
   onPaisChange() {
@@ -131,5 +134,10 @@ export class LodgingsComponent implements OnInit{
 
   getServiciosNombres(servicios: { id: number; nombre: string; borrado: boolean }[]): string {
     return servicios.map(s => s.nombre).join(', ');
+  }
+
+  getId(id: number) {
+    console.log(id);
+    this.router.navigate(['/hospedaje', id]);
   }
 }

@@ -12,6 +12,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ServicesComponent } from './components/services/services.component';
 import { MyLodgingComponent } from './components/mylodging/mylodging.component';
 import { LodgingsComponent } from './components/lodgings/lodgings.component';
+import { LodgingviewComponent } from './components/lodgingview/lodgingview.component';
 
 const routes: Routes = [
   { path: 'login',
@@ -36,6 +37,10 @@ const routes: Routes = [
   },
   { path: 'buscar-hospedajes',
     component: LodgingsComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'hospedaje/:id',
+    component: LodgingviewComponent,
     canActivate: [AuthGuard]
   },
   { path: '', component: HomeComponent },

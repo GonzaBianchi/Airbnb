@@ -180,4 +180,9 @@ public class HospedajeServiceImpl implements HospedajeService {
                                 .collect(Collectors.toList());
         }
 
+        public Hospedaje findById(Long id) {
+                return hospedajeRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado con el ID: " + id));
+        }
+
 }

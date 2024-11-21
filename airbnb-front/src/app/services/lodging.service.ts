@@ -79,6 +79,11 @@ export class LodgingService {
 
     return this.http.get<LodgingResponse[]>(`${this.apiUrl}/filtrar`, { params });
   }
+
+  getHospedajeUnico(id: number): Observable<LodgingResponse> {
+    return this.http.get<LodgingResponse>(`${this.apiUrl}/ver/${id}`);
+  }
+
   getMisHospedajes(): Observable<LodgingResponse[]> {
     return this.http.get<LodgingResponse[]>(`${this.apiUrl}/mis-hospedajes`);
   }

@@ -67,7 +67,12 @@
                   </strong>
                 </p>
                 <div class="d-grid gap-2">
-                  <button class="btn btn-warning">Ver más</button>
+                  <!-- <button class="btn btn-warning" [routerLink]="['/hospedaje', hospedaje.id]" (click)="$event.stopPropagation(); getId(hospedaje.id)">
+                    Ver más
+                  </button> -->
+                  <button class="btn btn-warning" (click)="getId(hospedaje.id)">
+                    Ver más
+                  </button>
                 </div>
               </div>
             </div>

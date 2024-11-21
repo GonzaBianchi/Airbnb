@@ -18,4 +18,6 @@ public interface HospedajeService {
     List<Hospedaje> findAll();
 
     List<Hospedaje> findFiltered(String pais, String ciudad, String tipo, Set<Long> servicioIds);
+
+    Hospedaje findById(Long id);
 }
