@@ -167,5 +167,15 @@ export class AuthService {
     
     return throwError(() => ({ status: error.status, message: errorMessage }));
   }
-
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+  
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.exp * 1000 < Date.now(); // Verifica si la expiración ya pasó
+    } catch {
+      return true; // Si no se puede decodificar el token, lo consideramos expirado
+    }
+  }
 }

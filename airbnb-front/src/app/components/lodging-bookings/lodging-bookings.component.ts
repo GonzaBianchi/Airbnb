@@ -33,7 +33,8 @@ export class LodgingBookingsComponent implements OnInit {
   cancelarReserva(idReserva: number) {
     this.bookingService.cancelarReserva(idReserva).subscribe({
       next: () => (
-        alert('Reserva cancelada exitosamente')
+        alert('Reserva cancelada exitosamente'),
+        this.cargarReservas()
       ),
       error: (err) => (
         console.log('Error al cancelar la reserva', err),
@@ -45,7 +46,9 @@ export class LodgingBookingsComponent implements OnInit {
   confirmarReserva(idReserva: number) {
     this.bookingService.confirmarReserva(idReserva).subscribe({
       next: () => (
-        alert('Reserva confirmada exitosamente')
+        alert('Reserva confirmada exitosamente'),
+        this.cargarReservas()
+
       ),
       error: (err) => (
         console.log('Error al confirmar la reserva', err),

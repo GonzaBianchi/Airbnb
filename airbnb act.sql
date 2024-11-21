@@ -147,6 +147,7 @@ INSERT INTO `ciudad` (`id`, `nombre`, `id_pais`) VALUES
 
 CREATE TABLE `hospedaje` (
   `id` bigint(20) NOT NULL,
+  `nombre` varchar(255) DEFAULT "hospedaje", 
   `descripcion` varchar(100) NOT NULL,
   `imagen` varchar(255) DEFAULT NULL,
   `precio_por_noche` decimal(8,2) NOT NULL,

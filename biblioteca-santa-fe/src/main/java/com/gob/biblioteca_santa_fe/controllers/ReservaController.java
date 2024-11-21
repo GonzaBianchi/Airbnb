@@ -4,6 +4,7 @@ import com.gob.biblioteca_santa_fe.DTOs.ReservaDTO;
 import com.gob.biblioteca_santa_fe.model.Reserva;
 import com.gob.biblioteca_santa_fe.services.ReservaServiceImpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,10 +98,16 @@ public class ReservaController {
     public ResponseEntity<?> verReservasAnfitrion(@RequestHeader("Authorization") String jwt) {
         try {
             List<Reserva> reservas = reservaService.getReservasByHospedajeUser(jwt);
+        
+            if (reservas.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList()); 
+            }
+        
             return ResponseEntity.ok(reservas);
         } catch (RuntimeException e) {
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener las reservas: " + e.getMessage());
+                    .body("Error del servidor: " + e.getMessage());
         }
     }
 

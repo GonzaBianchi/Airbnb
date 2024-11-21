@@ -40,12 +40,7 @@ body {
 }
 
 .logo img {
-    height: 50px;
-    transition: transform var(--transition-speed) ease-out;
-}
-
-.logo img:hover {
-    transform: scale(1.05) rotate(3deg);
+    height: 55px;
 }
 
 .navbar {
