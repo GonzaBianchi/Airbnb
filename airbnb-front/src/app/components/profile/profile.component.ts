@@ -52,7 +52,7 @@ export class ProfileComponent implements OnInit {
           email: data.email,
           dni: data.dni,
           fecha_nacimiento: data.fecha_nacimiento,
-          password: '' // Limpiamos el campo de contraseña
+          password: '' 
         });
         this.loading = false;
       },
@@ -67,7 +67,6 @@ export class ProfileComponent implements OnInit {
   toggleEditMode() {
     this.editMode = !this.editMode;
     if (!this.editMode) {
-      // Si cancelamos la edición, restauramos los valores originales
       this.mostrarUsuario();
     }
     this.error = '';

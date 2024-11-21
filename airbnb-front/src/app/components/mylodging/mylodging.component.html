@@ -19,6 +19,7 @@
           <div class="card-body">
             <h5 class="card-title">Hospedaje #{{ i + 1 }}</h5>
             <p class="card-text">
+              <strong>Nombre:</strong> {{ hospedaje.nombre }}<br>
               <strong>Descripción:</strong> {{ hospedaje.descripcion }}<br>
               <strong>Ubicación:</strong> {{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}<br>
               <strong>Precio por Noche:</strong> ${{ hospedaje.precio_por_noche }}<br>
@@ -52,6 +53,16 @@
           </div>
           <div class="modal-body">
             <form (ngSubmit)="crearHospedaje()">
+              <div class="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="nuevoHospedaje.nombre"
+                  name="nombre"
+                  required
+                >
+              </div>
               <div class="form-group">
                 <label>Descripción</label>
                 <input
@@ -158,6 +169,17 @@
             </div>
             <div class="modal-body">
               <form (ngSubmit)="guardarHospedajeEditado()">
+                
+                <div class="form-group">
+                  <label>Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="nuevoHospedaje.nombre"
+                    name="nombre"
+                    required
+                  >
+                </div>
                 <div class="form-group">
                   <label>Descripción</label>
                   <input

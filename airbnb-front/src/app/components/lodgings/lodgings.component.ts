@@ -68,9 +68,11 @@ export class LodgingsComponent implements OnInit{
     const paisObj = this.paises.find(p => p.nombre === paisSeleccionado);
     
     if (paisObj) {
-      this.paisCiudadService.getCiudades(paisObj.id!).subscribe(
-        ciudades => this.ciudades = ciudades
-      );
+      this.paisCiudadService.getCiudades(paisObj.id!).subscribe({
+        next: (ciudades) => (this.ciudades = ciudades,
+        console.log('Ciudades cargadas:', this.ciudades))
+      }
+      )
     } else {
       this.ciudades = [];
     }
@@ -92,7 +94,7 @@ export class LodgingsComponent implements OnInit{
     }
   }
 
-  aplicarFiltros() {
+  aplicarFiltros() { 
     this.cargando = true;
     const filtros: FiltroHospedaje = {
       pais: this.filterForm.get('pais')?.value || undefined,
@@ -100,18 +102,20 @@ export class LodgingsComponent implements OnInit{
       tipo: this.filterForm.get('tipo')?.value || undefined,
       servicioIds: this.serviciosSeleccionados.length > 0 ? this.serviciosSeleccionados : undefined
     };
-
+  
     this.lodgingService.getHospedajesFiltered(filtros).subscribe({
-      next: (hospedajes) => (
-        this.hospedajesFiltered = hospedajes,
-        this.cargando = false
-      ),
-      error: (error) => (
-        console.error('Error al filtrar hospedajes', error),
-        this.cargando = false
-      )
+      next: (hospedajes) => {
+        this.hospedajesFiltered = hospedajes || []; // Asignar un array vacío si la respuesta es nula
+        this.cargando = false;
+      },
+      error: (error) => {
+        console.error('Error al filtrar hospedajes', error);
+        this.hospedajesFiltered = []; // Manejar errores devolviendo una lista vacía
+        this.cargando = false;
+      }
     });
   }
+  
 
   resetFiltros() {
     // Resetear formulario
