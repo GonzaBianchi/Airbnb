@@ -17,10 +17,10 @@ import com.gob.biblioteca_santa_fe.repository.HospedajeRepository;
 import com.gob.biblioteca_santa_fe.repository.ServicioRepository;
 import com.gob.biblioteca_santa_fe.repository.TipoHospedajeRepository;
 import com.gob.biblioteca_santa_fe.repository.UsuarioRepository;
-import com.gob.biblioteca_santa_fe.services.JwtService;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 
 @Service
@@ -99,7 +99,7 @@ public class HospedajeServiceImpl implements HospedajeService {
                                 .servicios(serviciosCargados)
                                 .usuario(usuario)
                                 .build();
-                                System.out.println("DATOS DE HOSPEDAJE A CREAR: " + hospedaje);
+                System.out.println("DATOS DE HOSPEDAJE A CREAR: " + hospedaje);
                 return hospedajeRepository.save(hospedaje);
         }
 
@@ -158,7 +158,26 @@ public class HospedajeServiceImpl implements HospedajeService {
         }
 
         public List<Hospedaje> findAll() {
-                return hospedajeRepository.findAll();
+                return hospedajeRepository.findAllByBorradoFalse();
+        }
+
+        public List<Hospedaje> findFiltered(String pais, String ciudad, String tipo, Set<Long> servicioIds) {
+                // Obtener todos los hospedajes con los filtros base
+                List<Hospedaje> hospedajesBase = hospedajeRepository.findByBaseFilters(pais, ciudad, tipo);
+
+                // Si no hay filtro de servicios, devolver todos los hospedajes base
+                if (servicioIds == null || servicioIds.isEmpty()) {
+                        return hospedajesBase;
+                }
+
+                // Filtrar por servicios
+                return hospedajesBase.stream()
+                                .filter(hospedaje -> servicioIds.isEmpty() ||
+                                                hospedaje.getServicios().stream()
+                                                                .map(Servicio::getId)
+                                                                .collect(Collectors.toSet())
+                                                                .containsAll(servicioIds))
+                                .collect(Collectors.toList());
         }
 
 }

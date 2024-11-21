@@ -5,11 +5,11 @@ import { LodgingtypeService, LodgingType } from 'src/app/services/lodgingtype.se
 import { ServicesService, Services } from 'src/app/services/services.service';
 
 @Component({
-  selector: 'app-lodging',
-  templateUrl: './lodging.component.html',
-  styleUrls: ['./lodging.component.css'],
+  selector: 'app-mylodging',
+  templateUrl: './mylodging.component.html',
+  styleUrls: ['./mylodging.component.css'],
 })
-export class LodgingComponent implements OnInit {
+export class MyLodgingComponent implements OnInit {
   misHospedajes: LodgingResponse[] = [];
   nuevoHospedaje: LodgingRequest = {
     descripcion: '',

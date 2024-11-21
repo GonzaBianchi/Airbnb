@@ -10,8 +10,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ServicesComponent } from './components/services/services.component';
-import { LodgingComponent } from './components/lodging/lodging.component';
+import { MyLodgingComponent } from './components/mylodging/mylodging.component';
 import { AuthInterceptor } from './interceptors/auth';
+import { LodgingsComponent } from './components/lodgings/lodgings.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AuthInterceptor } from './interceptors/auth';
     HomeComponent,
     ProfileComponent,
     ServicesComponent,
-    LodgingComponent,
+    MyLodgingComponent,
+    LodgingsComponent,
   ],
   imports: [
     BrowserModule,

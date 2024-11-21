@@ -1,6 +1,6 @@
 // src/app/services/lodging.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface LodgingResponse {
@@ -37,6 +37,13 @@ export interface LodgingRequest {
   servicios: { id: number }[];
 }
 
+export interface FiltroHospedaje {
+  pais?: string;
+  ciudad?: string;
+  tipo?: string;
+  servicioIds?: number[];
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +53,32 @@ export class LodgingService {
 
   constructor(private http: HttpClient) {}
 
+  getAll(): Observable<LodgingResponse[]> {
+    return this.http.get<LodgingResponse[]>(`${this.apiUrl}/`);
+  }
+
+  // En LodgingService
+  getHospedajesFiltered(filtros: FiltroHospedaje): Observable<LodgingResponse[]> {
+    let params = new HttpParams();
+
+    // Añadir parámetros si están definidos
+    if (filtros.pais) {
+      params = params.append('pais', filtros.pais);
+    }
+    if (filtros.ciudad) {
+      params = params.append('ciudad', filtros.ciudad);
+    }
+    if (filtros.tipo) {
+      params = params.append('tipo', filtros.tipo);
+    }
+    if (filtros.servicioIds && filtros.servicioIds.length > 0) {
+      filtros.servicioIds.forEach(id => {
+        params = params.append('servicioIds', id.toString());
+      });
+    }
+
+    return this.http.get<LodgingResponse[]>(`${this.apiUrl}/filtrar`, { params });
+  }
   getMisHospedajes(): Observable<LodgingResponse[]> {
     return this.http.get<LodgingResponse[]>(`${this.apiUrl}/mis-hospedajes`);
   }

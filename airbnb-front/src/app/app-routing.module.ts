@@ -10,7 +10,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ServicesComponent } from './components/services/services.component';
-import { LodgingComponent } from './components/lodging/lodging.component';
+import { MyLodgingComponent } from './components/mylodging/mylodging.component';
+import { LodgingsComponent } from './components/lodgings/lodgings.component';
 
 const routes: Routes = [
   { path: 'login',
@@ -30,7 +31,11 @@ const routes: Routes = [
     canActivate: [AdminGuard] 
   },
   { path: 'mis-hospedajes',
-    component: LodgingComponent,
+    component: MyLodgingComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'buscar-hospedajes',
+    component: LodgingsComponent,
     canActivate: [AuthGuard]
   },
   { path: '', component: HomeComponent },

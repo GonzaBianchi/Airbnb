@@ -1,6 +1,8 @@
 package com.gob.biblioteca_santa_fe.controllers;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gob.biblioteca_santa_fe.DTOs.HospedajeDTO;
@@ -28,9 +31,24 @@ public class HospedajeController {
     private HospedajeServiceImpl hospedajeService;
 
     @PreAuthorize("permitAll")
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<List<Hospedaje>> findAll() {
         List<Hospedaje> hospedajes = hospedajeService.findAll();
+        return ResponseEntity.ok(hospedajes);
+    }
+
+    @PreAuthorize("permitAll")
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<Hospedaje>> getFilteredHospedajes(
+            @RequestParam(required = false) String pais,
+            @RequestParam(required = false) String ciudad,
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) Set<Long> servicioIds) {
+        Set<Long> servicioIdsSet = servicioIds != null ? new HashSet<>(servicioIds) : null;
+        List<Hospedaje> hospedajes = hospedajeService.findFiltered(pais, ciudad, tipo, servicioIdsSet);
+        if (hospedajes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(hospedajes);
     }
 

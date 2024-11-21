@@ -1,0 +1,79 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12 col-md-4 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h2>Filtro de hospedajes</h2>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="filterForm" (ngSubmit)="aplicarFiltros()">
+            <div class="mb-3">
+              <label for="country" class="form-label">País</label>
+              <select id="country" formControlName="pais" class="form-select" (change)="onPaisChange()">
+                <option value="">Todos los países</option>
+                <option *ngFor="let pais of paises" [value]="pais.nombre">{{ pais.nombre }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label">Ciudad</label>
+              <select id="city" formControlName="ciudad" class="form-select">
+                <option value="">Todas las ciudades</option>
+                <option *ngFor="let ciudad of ciudades" [value]="ciudad.nombre">{{ ciudad.nombre }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="type" class="form-label">Tipo de hospedaje</label>
+              <select id="type" formControlName="tipo" class="form-select">
+                <option value="">Todos los tipos</option>
+                <option *ngFor="let tipo of tiposHospedaje" [value]="tipo.nombre">{{ tipo.nombre }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Servicios</label>
+              <div class="services-scroll">
+                <div *ngFor="let servicio of servicios" class="form-check">
+                  <input class="form-check-input" type="checkbox" [value]="servicio.id" (change)="onServicioChange($event)">
+                  <label class="form-check-label">{{ servicio.nombre }}</label>
+                </div>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+              <button type="button" class="btn btn-outline-secondary" (click)="resetFiltros()">Limpiar Filtros</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8">
+      <div *ngIf="cargando" class="alert alert-info">Cargando hospedajes...</div>
+      <div *ngIf="hospedajesFiltered.length === 0" class="alert alert-info">No se encontraron hospedajes</div>
+      <div *ngIf="hospedajesFiltered.length > 0">
+        <h2 class="mb-4">{{ hospedajesFiltered.length }} Hospedajes Encontrados</h2>
+        <div class="row g-4">
+          <div *ngFor="let hospedaje of hospedajesFiltered; let i = index" class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100">
+              <img [src]="hospedaje.imagen" class="card-img-top" alt="Accommodation Image">
+              <div class="card-body">
+                <h5 class="card-title">{{ hospedaje.descripcion }}</h5>
+                <p class="card-text">
+                  <strong>{{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}</strong><br>
+                  <strong>${{ hospedaje.precio_por_noche }}</strong><br>
+                  <strong>{{ hospedaje.id_tipo_hospedaje.nombre }}</strong><br>
+                  <strong>
+                    <span *ngFor="let servicio of hospedaje.servicios; let last = last">
+                      {{ servicio.nombre }}{{ !last ? ', ' : '' }}
+                    </span>
+                  </strong>
+                </p>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-warning">Ver más</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
