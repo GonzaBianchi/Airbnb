@@ -11,10 +11,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
 
 import java.time.Instant;
-import java.time.LocalDate;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +29,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private TipoUsuarioRepository tipoUsuarioRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    // @Autowired
-    // private PasswordEncoder passwordEncoder;
+
 
     @Override
     public List<Usuario> findAll() {

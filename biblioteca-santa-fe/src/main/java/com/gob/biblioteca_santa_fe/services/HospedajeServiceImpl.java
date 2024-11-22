@@ -106,13 +106,13 @@ public class HospedajeServiceImpl implements HospedajeService {
 
         @Override
         public Hospedaje modificarHospedaje(String jwt, Long id, HospedajeDTO hospedajeDTO) {
-                String username = jwtService.extractUsername(jwt.substring(7)); // Remove "Bearer "
+                String username = jwtService.extractUsername(jwt.substring(7)); 
 
-                // Find user by username
+
                 Usuario usuario = usuarioRepository.findByUsername(username)
                                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-                // Verify the hospedaje belongs to the user
+
                 Hospedaje hospedaje = hospedajeRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado"));
 
@@ -163,15 +163,11 @@ public class HospedajeServiceImpl implements HospedajeService {
         }
 
         public List<Hospedaje> findFiltered(String pais, String ciudad, String tipo, Set<Long> servicioIds) {
-                // Obtener todos los hospedajes con los filtros base
                 List<Hospedaje> hospedajesBase = hospedajeRepository.findByBaseFilters(pais, ciudad, tipo);
 
-                // Si no hay filtro de servicios, devolver todos los hospedajes base
                 if (servicioIds == null || servicioIds.isEmpty()) {
                         return hospedajesBase;
                 }
-
-                // Filtrar por servicios
                 return hospedajesBase.stream()
                                 .filter(hospedaje -> servicioIds.isEmpty() ||
                                                 hospedaje.getServicios().stream()

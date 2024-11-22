@@ -55,16 +55,10 @@ public class Usuario implements UserDetails {
     @Column(name = "fecha_nacimiento")
     private LocalDate fecha_nacimiento;
 
-    // @Enumerated(EnumType.STRING)
-    // @Column(name = "tipo_usuario", nullable = false)
-    // private TipoUsuario tipoUsuario;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuario_tipo_usuario", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_tipo_usuario"))
     private Set<TipoUsuario> tipoUsuarios = new HashSet<>();
-    // public enum TipoUsuario {
-    // INQUILINO, ANFITRION, ADMINISTRADOR
-    // }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

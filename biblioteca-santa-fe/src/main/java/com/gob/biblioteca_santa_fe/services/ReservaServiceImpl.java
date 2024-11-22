@@ -50,8 +50,7 @@ public class ReservaServiceImpl implements ReservaService {
         Hospedaje hospedaje = hospedajeRepository.findById(reservaDTO.getId_hospedaje())
                 .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado"));
 
-        // Usuario usuario = usuarioRepository.findById(reservaDTO.getId_usuario())
-        // .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Usuario usuario = usuarioRepository.findByUsername(username)
@@ -63,9 +62,8 @@ public class ReservaServiceImpl implements ReservaService {
                 reservaDTO.getFecha_check_out());
 
         Reserva reserva = Reserva.builder()
-                // .id_hospedaje(hospedaje.getId()) // Añade esta línea
+
                 .hospedaje(hospedaje)
-                // .id_usuario(usuario.getId()) // Añade esta línea
                 .usuario(usuario)
                 .fecha_check_in(reservaDTO.getFecha_check_in())
                 .fecha_check_out(reservaDTO.getFecha_check_out())
@@ -106,8 +104,7 @@ public class ReservaServiceImpl implements ReservaService {
         Hospedaje hospedaje = hospedajeRepository.findById(reservaDTO.getId_hospedaje())
                 .orElseThrow(() -> new RuntimeException("Hospedaje no encontrado"));
 
-        // Usuario usuario = usuarioRepository.findById(reservaDTO.getId_usuario())
-        // .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Usuario usuario = usuarioRepository.findByUsername(username)
@@ -185,15 +182,14 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     public List<Reserva> getReservasByUser(String jwt) {
-        String username = jwtService.extractUsername(jwt.substring(7)); // Remove "Bearer "
+        String username = jwtService.extractUsername(jwt.substring(7));
 
-        // Find user by username
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         LocalDate today = LocalDate.now();
 
-        // Find reservas for the user from today onwards
+
         List<Reserva> reservas = reservaRepository.findByUsuarioIdAndFechaCheckInGreaterThanEqual(
                 usuario.getId(),
                 today);

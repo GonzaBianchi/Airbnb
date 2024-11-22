@@ -23,8 +23,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private JwtService jwtUtils;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
