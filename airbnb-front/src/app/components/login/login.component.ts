@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         if (response.token) {
-          // La lógica de guardado del token y tipoUsuarios ya está en el servicio
           this.router.navigate(['/']);
         }
       },

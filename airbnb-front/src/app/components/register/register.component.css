@@ -1,62 +1,213 @@
-form {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 2rem auto;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #45a049;
+  --background-color: #f4f4f4;
+  --text-color: #333;
+  --error-color: #d9534f;
+  --transition-speed: 0.3s;
+}
+
+.registro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.registro-form {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.1),
+    0 6px 10px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 500px;
+  transform: perspective(1000px);
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.registro-form h2 {
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  position: relative;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.registro-form h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-color);
+  transform: translateX(-50%);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: color var(--transition-speed);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 
+    border-color var(--transition-speed), 
+    box-shadow var(--transition-speed),
+    transform var(--transition-speed);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  transform: scale(1.01);
+}
+
+.error-messages {
+  color: var(--error-color);
+  font-size: 0.825rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: 
+    opacity var(--transition-speed), 
+    max-height var(--transition-speed);
+}
+
+.form-group input:invalid + .error-messages,
+.form-group input:focus + .error-messages {
+  opacity: 1;
+  max-height: 100px;
+}
+
+.error-messages span {
+  display: block;
+  margin-bottom: 0.25rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+button {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 
+    background-color var(--transition-speed),
+    transform var(--transition-speed),
+    box-shadow var(--transition-speed);
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+  /* transform: translateY(-2px); */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-global {
+  color: var(--error-color);
+  text-align: center;
+  margin-top: 1rem;
+  animation: shake 0.4s ease-in-out;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.login-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-speed);
+}
+
+.login-link a:hover {
+  color: var(--secondary-color);
+}
+
+.input-specifications {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.input-specifications p {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.input-specifications ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.input-specifications li {
+  margin-bottom: 0.25rem;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  input:focus {
-    outline: none;
-    border-color: #4CAF50;
+  to {
+    opacity: 1;
   }
-  
-  button[type="submit"] {
-    display: block;
-    width: 100%;
-    background-color: #4CAF50;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  
-  p {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  a {
-    color: #4CAF50;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s;
-  }
-  
-  a:hover {
-    color: #45a049;
-  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}

@@ -8,7 +8,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   constructor(public authService: AuthService) {}
-  title = 'airbnb-front';
+  title = 'Airbnb';
 
   logout(): void {
     this.authService.logout();

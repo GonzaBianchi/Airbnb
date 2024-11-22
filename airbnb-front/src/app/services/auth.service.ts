@@ -137,7 +137,6 @@ export class AuthService {
     this.isAuthenticatedSubject.next(isLoggedIn);
   
     if (isLoggedIn) {
-      // Verifica si el usuario tiene los roles correctos
       const roles = this.getTipoUsuarios();
       const hasRequiredRole = roles.some(
         tipo => tipo.nombre === 'INQUILINO' || tipo.nombre === 'ANFITRION'
@@ -167,15 +166,16 @@ export class AuthService {
     
     return throwError(() => ({ status: error.status, message: errorMessage }));
   }
+  
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (!token) return true;
   
     try {
       const decodedToken: any = jwtDecode(token);
-      return decodedToken.exp * 1000 < Date.now(); // Verifica si la expiración ya pasó
+      return decodedToken.exp * 1000 < Date.now();
     } catch {
-      return true; // Si no se puede decodificar el token, lo consideramos expirado
+      return true;
     }
   }
 }

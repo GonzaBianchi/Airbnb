@@ -25,14 +25,40 @@ export class RegisterComponent implements OnInit {
 
   createRegistrationForm(): FormGroup {
     return this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      username: ['', [
+        Validators.required, 
+        Validators.minLength(3),
+        Validators.pattern('^[a-zA-Z0-9_-]{3,16}$')
+      ]],
+      password: ['', [
+        Validators.required, 
+        Validators.minLength(8),
+        Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$')
+      ]],
       passwordRepeat: ['', Validators.required],
-      nombre: ['', [Validators.required, Validators.minLength(2)]],
-      apellido: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      dni: ['', [Validators.required, Validators.pattern('^[0-9]{8}$')]],
-      fecha_nacimiento: ['', Validators.required]
+      nombre: ['', [
+        Validators.required, 
+        Validators.minLength(2),
+        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')
+      ]],
+      apellido: ['', [
+        Validators.required, 
+        Validators.minLength(2),
+        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')
+      ]],
+      email: ['', [
+        Validators.required, 
+        Validators.email,
+        Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')
+      ]],
+      dni: ['', [
+        Validators.required, 
+        Validators.pattern('^[0-9]{8}$')
+      ]],
+      fecha_nacimiento: ['', [
+        Validators.required,
+        this.edadMinimaValidator(18)
+      ]]
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -46,7 +72,26 @@ export class RegisterComponent implements OnInit {
     return null;
   }
 
+  private edadMinimaValidator(edadMinima: number) {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      if (!control.value) return null;
+      
+      const fechaNacimiento = new Date(control.value);
+      const hoy = new Date();
+      let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+      const m = hoy.getMonth() - fechaNacimiento.getMonth();
+      
+      if (m < 0 || (m === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+        edad--;
+      }
+      
+      return edad >= edadMinima ? null : { edadMinima: true };
+    };
+  }
+
   onSubmit(): void {
+    this.registrationForm.markAllAsTouched();
+    
     if (this.registrationForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       this.errorMessage = '';
@@ -66,8 +111,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(registrationData).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
-          // Mostrar mensaje de éxito si lo deseas
-          alert('Usuario registrado exitosamente');
+          alert('Registro exitoso');
           this.router.navigate(['/login']);
         },
         error: (error) => {

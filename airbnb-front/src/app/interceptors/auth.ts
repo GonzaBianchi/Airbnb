@@ -25,7 +25,6 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.authService.getToken();
 
     if (token) {
-      // Verifica si el token ha expirado
       const isTokenExpired = this.authService.isTokenExpired();
       if (isTokenExpired) {
         this.authService.logout();

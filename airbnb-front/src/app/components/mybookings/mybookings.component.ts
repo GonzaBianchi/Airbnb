@@ -137,7 +137,6 @@ export class MybookingsComponent implements OnInit {
     }
   }
 
-   // Método para inicializar el formulario
    initializeForm(booking: BookingResponse) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);

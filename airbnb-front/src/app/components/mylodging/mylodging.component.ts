@@ -88,15 +88,15 @@ export class MyLodgingComponent implements OnInit {
 
   actualizarServicios(event: any, servicioId?: number): void {
     const checked = event.target.checked;
-    // Only proceed if servicioId is defined
+    
     if (servicioId !== undefined) {
       if (checked) {
-        // Check if service is not already in the list
+        
         if (!this.nuevoHospedaje.servicios.some(s => s.id === servicioId)) {
           this.nuevoHospedaje.servicios.push({ id: servicioId });
         }
       } else {
-        // Remove service if unchecked
+        
         this.nuevoHospedaje.servicios = this.nuevoHospedaje.servicios.filter((servicio) => servicio.id !== servicioId);
       }
     }
@@ -115,12 +115,12 @@ export class MyLodgingComponent implements OnInit {
   }
   
   crearHospedaje(): void {
-    // Validaciones antes de crear
+    
     if (!this.validarDatosHospedaje()) {
       return;
     }
   
-    // Preparar el objeto para enviar
+    
     const hospedajeParaEnviar: LodgingRequest = {
       nombre: this.nuevoHospedaje.nombre.trim(),
       descripcion: this.nuevoHospedaje.descripcion.trim(),
@@ -142,38 +142,38 @@ export class MyLodgingComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al crear hospedaje', error);
-        // Opcional: Mostrar mensaje de error al usuario
+        
         this.mostrarMensajeError(error.error);
       }
     });
   }
   
-  // Método de validación
+  
   validarDatosHospedaje(): boolean {
-    // Validar descripción
+    
     if (!this.nuevoHospedaje.descripcion || this.nuevoHospedaje.descripcion.trim().length < 3) {
       this.mostrarMensajeError('La descripción debe tener al menos 3 caracteres');
       return false;
     }
-    // Validar precio
+    
     if (this.nuevoHospedaje.precio_por_noche <= 0) {
       this.mostrarMensajeError('El precio debe ser mayor a 0');
       return false;
     }
   
-    // Validar ciudad
+    
     if (!this.nuevoHospedaje.id_ciudad || this.nuevoHospedaje.id_ciudad === 0) {
       this.mostrarMensajeError('Seleccione una ciudad');
       return false;
     }
   
-    // Validate lodging type
+    
     if (!this.nuevoHospedaje.id_tipo_hospedaje || this.nuevoHospedaje.id_tipo_hospedaje === 0) {
       this.mostrarMensajeError('Seleccione un tipo de hospedaje');
       return false;
     }
   
-    // Validar servicios
+    
     if (!this.nuevoHospedaje.servicios || this.nuevoHospedaje.servicios.length === 0) {
       this.mostrarMensajeError('Seleccione al menos un servicio');
       return false;
@@ -191,14 +191,14 @@ export class MyLodgingComponent implements OnInit {
   }
 
   editarHospedaje(hospedaje: LodgingResponse): void {
-    // Cargar ciudades del país de la ciudad del hospedaje
+    
     this.paisSeleccionadoId = hospedaje.ciudad.pais.id;
     this.cargarCiudades(this.paisSeleccionadoId);
   
-    // Establecer el país seleccionado (esto requiere que agregues una variable al componente)
+    
     console.log('Seleccionado el país:', this.paisSeleccionadoId);
   
-    // Preparar el nuevoHospedaje con los datos para editar
+    
     this.nuevoHospedaje = {
       id: hospedaje.id,
       nombre: hospedaje.nombre,
@@ -210,23 +210,23 @@ export class MyLodgingComponent implements OnInit {
       servicios: hospedaje.servicios ? hospedaje.servicios.map(s => ({ id: s.id })) : []
     };
     
-    // Abrir formulario de edición
+    
     this.mostrarFormularioEditar = true;
   }
 
   guardarHospedajeEditado(): void {
-    // Validaciones antes de editar
+    
     if (!this.validarDatosHospedaje()) {
       return;
     }
 
-    // Asegurarse de que tenemos un ID para editar
+    
     if (!this.nuevoHospedaje.id) {
       this.mostrarMensajeError('Error: No se puede identificar el hospedaje a editar');
       return;
     }
 
-    // Preparar el objeto para enviar (similar a crearHospedaje)
+    
     const hospedajeParaEditar: LodgingRequest = {
       nombre: this.nuevoHospedaje.nombre.trim(),
       descripcion: this.nuevoHospedaje.descripcion.trim(),
@@ -239,14 +239,14 @@ export class MyLodgingComponent implements OnInit {
 
     console.log('Editar hospedaje: datos enviados', hospedajeParaEditar);
     
-    // Llamar al servicio para modificar el hospedaje
+    
     this.lodgingService.modificarHospedaje(this.nuevoHospedaje.id, hospedajeParaEditar).subscribe({
       next: (hospedajeModificado) => {
         console.log('Hospedaje modificado exitosamente', hospedajeModificado);
         
         this.cargarMisHospedajes();
         
-        // Cerrar formulario y resetear
+        
         this.mostrarFormularioEditar = false;
         this.resetearFormulario();
       },
@@ -258,7 +258,7 @@ export class MyLodgingComponent implements OnInit {
   }
 
   isServiceSelected(servicioId?: number): boolean {
-    // Only check if servicioId is defined
+    
     if (servicioId === undefined) {
       return false;
     }
@@ -270,7 +270,7 @@ export class MyLodgingComponent implements OnInit {
     this.resetearFormulario();
   }
 
-  // Método para resetear el formulario
+  
   resetearFormulario(): void {
     this.nuevoHospedaje = {
       nombre: '',

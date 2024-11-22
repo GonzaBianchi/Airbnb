@@ -1,4 +1,3 @@
-// user.service.ts
 import { Injectable } from '@angular/core';
 import { AuthService, TipoUsuario } from './auth.service';
 import { Observable, throwError } from 'rxjs';
@@ -63,8 +62,8 @@ export class UserService {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           let errorMessage = 'Error al modificar el usuario';
-          console.error('Error detallado:', error); // Para debugging
-          return throwError(() => errorMessage); // Cambiado aquí
+          console.error('Error detallado:', error);
+          return throwError(() => errorMessage);
         })
       );
   }

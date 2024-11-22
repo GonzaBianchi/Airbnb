@@ -42,14 +42,10 @@ export class BookingService {
     let errorMessage = 'Ha ocurrido un error';
     
     if (error.error instanceof ErrorEvent) {
-      // Error del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Error del servidor
-      // Usamos el mensaje que viene del backend si está disponible
       errorMessage = error.error || errorMessage;
       
-      // Si no hay un mensaje específico del backend, usamos los mensajes por defecto
       if (!error.error) {
         if (error.status === 404) {
           errorMessage = 'No se encontró el recurso solicitado';
@@ -87,7 +83,7 @@ export class BookingService {
         map(response => response || []),
         catchError(error => {
           if (error.status === 500 && error.error?.includes('no tiene reservas')) {
-            return of([]); // Retorna array vacío si no hay reservas
+            return of([]);
           }
           return this.handleError(error);
         })
@@ -100,7 +96,7 @@ export class BookingService {
         map(response => response || []),
         catchError(error => {
           if (error.status === 500 && error.error?.includes('no tiene reservas')) {
-            return of([]); // Retorna array vacío si no hay reservas
+            return of([]);
           }
           return this.handleError(error);
         })

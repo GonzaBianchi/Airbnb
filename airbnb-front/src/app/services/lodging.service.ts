@@ -1,4 +1,3 @@
-// src/app/services/lodging.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -59,11 +58,9 @@ export class LodgingService {
     return this.http.get<LodgingResponse[]>(`${this.apiUrl}/`);
   }
 
-  // En LodgingService
   getHospedajesFiltered(filtros: FiltroHospedaje): Observable<LodgingResponse[]> {
     let params = new HttpParams();
 
-    // Añadir parámetros si están definidos
     if (filtros.pais) {
       params = params.append('pais', filtros.pais);
     }

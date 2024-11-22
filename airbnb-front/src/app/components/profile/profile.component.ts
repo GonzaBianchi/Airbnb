@@ -94,7 +94,6 @@ export class ProfileComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error detallado:', error);
-          // El error ahora viene directamente como string
           this.error = typeof error === 'string' ? error : 'Error al modificar los datos del usuario';
           this.loading = false;
         }

@@ -9,14 +9,14 @@
           [routerLinkActive]="['active-link']" 
           [routerLinkActiveOptions]="{exact: true}" 
           class="nav-item">
-          <i class="fas fa-home"></i>Inicio
+          <i class="fas fa-globe"></i>Inicio
         </a>
         <ng-container *ngIf="(authService.isAuthenticated$ | async) && (authService.isInquilinoOrAnfrition$ | async)">
           <a routerLink="buscar-hospedajes" routerLinkActive="active-link" class="nav-item">
             <i class="fas fa-search"></i>Buscar hospedajes
           </a>
           <a routerLink="/mis-hospedajes" routerLinkActive="active-link" class="nav-item">
-            <i class="fas fa-home"></i>Mis hospedajes
+            <i class="fas fa-hotel"></i>Mis hospedajes
           </a>
           <a routerLink="/mis-reservas" routerLinkActive="active-link" class="nav-item">
             <i class="fas fa-calendar-alt"></i>Mis reservas
