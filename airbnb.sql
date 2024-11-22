@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-11-2024 a las 21:13:05
+-- Tiempo de generación: 22-11-2024 a las 17:31:26
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -147,7 +147,6 @@ INSERT INTO `ciudad` (`id`, `nombre`, `id_pais`) VALUES
 
 CREATE TABLE `hospedaje` (
   `id` bigint(20) NOT NULL,
-  `nombre` varchar(255) DEFAULT "hospedaje", 
   `descripcion` varchar(100) NOT NULL,
   `imagen` varchar(255) DEFAULT NULL,
   `precio_por_noche` decimal(8,2) NOT NULL,
@@ -156,17 +155,18 @@ CREATE TABLE `hospedaje` (
   `id_tipo_hospedaje` int(11) NOT NULL,
   `id_ciudad` int(11) NOT NULL,
   `id_usuario` bigint(20) DEFAULT NULL,
-  `borrado` tinyint(1) DEFAULT 0
+  `borrado` tinyint(1) DEFAULT 0,
+  `nombre` varchar(255) DEFAULT 'Hospedaje'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `hospedaje`
 --
 
-INSERT INTO `hospedaje` (`id`, `descripcion`, `imagen`, `precio_por_noche`, `fecha_creacion`, `fecha_modificacion`, `id_tipo_hospedaje`, `id_ciudad`, `id_usuario`, `borrado`) VALUES
-(1, 'Un hotel muy lindo bilbao televisor y cocina.', 'http://ejemplo.com/imagen.jpg', 50.00, '2024-10-31 20:24:08', NULL, 4, 17, 5, 0),
-(2, 'Un hotel terriblemente nasheee', 'http://ejemplo22.com/imagen2.jpg', 150.00, '2024-11-18 20:09:26', NULL, 2, 15, 5, 0),
-(3, 'prueba de modificacion', 'http://ejemplo3.com/imagen32.jpg', 332.00, '2024-11-18 20:16:48', '2024-11-18', 1, 3, 5, 0);
+INSERT INTO `hospedaje` (`id`, `descripcion`, `imagen`, `precio_por_noche`, `fecha_creacion`, `fecha_modificacion`, `id_tipo_hospedaje`, `id_ciudad`, `id_usuario`, `borrado`, `nombre`) VALUES
+(1, 'Un hotel muy lindo bilbao televisor y cocina.', 'http://ejemplo.com/imagen.jpg', 50.00, '2024-10-31 20:24:08', NULL, 4, 17, 5, 0, 'Hospedaje'),
+(2, 'Un hotel terriblemente nasheee', 'http://ejemplo22.com/imagen2.jpg', 150.00, '2024-11-18 20:09:26', NULL, 2, 15, 5, 0, 'Hospedaje'),
+(3, 'prueba de modificacion', 'http://ejemplo3.com/imagen32.jpg', 332.00, '2024-11-18 20:16:48', '2024-11-18', 1, 3, 5, 0, 'Hospedaje');
 
 -- --------------------------------------------------------
 
@@ -237,8 +237,12 @@ INSERT INTO `reserva` (`id`, `id_hospedaje`, `id_usuario`, `fecha_check_in`, `fe
 (13, 1, 2, '2024-12-10', '2024-12-11', 4, 1, 1, 50.00, '2024-10-31 23:01:14', '2024-10-31 23:02:24', 'Confirmada', 2),
 (14, 1, 2, '2024-12-05', '2024-12-06', 4, 1, 1, 50.00, '2024-10-31 23:03:16', '2024-10-31 23:03:52', 'Confirmada', 2),
 (15, 1, 2, '2024-12-03', '2024-12-04', 4, 1, 1, 50.00, '2024-10-31 23:05:20', '2024-10-31 23:06:02', 'Confirmada', 2),
-(16, 1, 2, '2024-11-23', '2024-11-24', 4, 1, 1, 50.00, '2024-10-31 23:08:11', '2024-10-31 23:12:18', 'Confirmada', 2),
-(17, 1, 2, '2024-11-01', '2024-11-04', 4, 1, 1, 150.00, '2024-10-31 23:10:10', '2024-10-31 23:10:30', 'Confirmada', 2);
+(16, 1, 2, '2024-11-23', '2024-11-24', 4, 1, 1, 50.00, '2024-11-21 22:20:41', '2024-10-31 23:12:18', 'Cancelada', 2),
+(17, 1, 2, '2024-11-01', '2024-11-04', 4, 1, 1, 150.00, '2024-10-31 23:10:10', '2024-10-31 23:10:30', 'Confirmada', 2),
+(18, 2, 5, '2025-01-01', '2025-01-07', 2, 0, 2, 900.00, '2024-11-21 14:32:43', '2024-11-21 17:11:43', 'Pendiente', 0),
+(19, 1, 5, '2025-01-01', '2025-01-03', 1, 0, 0, 100.00, '2024-11-21 16:55:12', NULL, 'Cancelada', 2),
+(20, 1, 5, '2025-10-12', '2025-10-16', 2, 0, 1, 200.00, '2024-11-21 23:26:06', '2024-11-22 00:35:52', 'Pendiente', 0),
+(21, 1, 5, '2001-11-25', '2001-11-27', 1, 0, 1, 100.00, '2024-11-21 23:45:37', '2024-11-22 00:25:18', 'Pendiente', 0);
 
 -- --------------------------------------------------------
 
@@ -364,7 +368,8 @@ INSERT INTO `usuario` (`id`, `username`, `email`, `password`, `dni`, `nombre`, `
 (2, 'gonza.bianch1', 'gonzabianch@mail.com', '$2a$10$m.COtiixh1TBh0GXWNnS3ud372DhKRYQ/aJ.gmERiY0gu5si2u2am', '87654321', 'gonzalo', 'bianchini', '2001-10-24', '2024-10-29 20:40:11', NULL),
 (3, 'gonzibianchi123', 'gonzi@gmail.com', '$2a$10$gQsQhIK6M1v0pvCQz62kH.CayJuXB76dF0AHJMLZT6gTe5mP1zQsC', '99999995', 'gonzia', 'bianchicitoa', '2001-10-12', '2024-11-15 00:24:44', '2024-11-16 04:18:20.000000'),
 (4, 'gonzitabian', 'chici@gmail.com', '$2a$10$33DRh30jjVWk9lB0o2axTuStG7W19k6aYJpWlKUv04MrjSL3/oF2m', '99999998', 'gonzalito', 'chicito', '2002-10-12', '2024-11-15 00:39:40', NULL),
-(5, 'zalito123', 'zalito123@gmail.com', '$2a$10$HO4VpPhDRcMkJvCcSh1AnO3u6abTxY7GcEp2CDkOQc96HhCN4E9/O', '99999997', 'zalitos', 'zalitoz', '2003-10-12', '2024-11-15 00:49:42', NULL);
+(5, 'zalito123', 'zalito123@gmail.com', '$2a$10$HO4VpPhDRcMkJvCcSh1AnO3u6abTxY7GcEp2CDkOQc96HhCN4E9/O', '99999997', 'zalitos', 'zalitoz', '2003-10-12', '2024-11-15 00:49:42', NULL),
+(6, 'zalit123', 'gon@chito.com', '$2a$10$Q5zpwKjpntUWi6A2SO7IAupu7FvFr7qnNgb1RsZCBL5q0R5qmvuYK', '76767676', 'gonzao', 'chito', '2001-12-12', '2024-11-22 16:05:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -388,9 +393,11 @@ INSERT INTO `usuario_tipo_usuario` (`id_tipo_usuario`, `id_usuario`) VALUES
 (2, 2),
 (2, 4),
 (2, 5),
+(2, 6),
 (3, 2),
 (3, 4),
-(3, 5);
+(3, 5),
+(3, 6);
 
 --
 -- Índices para tablas volcadas
@@ -491,7 +498,7 @@ ALTER TABLE `pais`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `servicio`
@@ -515,7 +522,7 @@ ALTER TABLE `tipo_usuario`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
