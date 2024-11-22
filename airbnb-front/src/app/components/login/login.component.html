@@ -29,8 +29,9 @@
       <div class="form-actions">
         <button 
           type="submit" 
-          [disabled]="loginForm.invalid || loading">
-          {{ loading ? 'Iniciando sesión...' : 'Iniciar sesión' }}
+          [disabled]="loginForm.invalid || loading"
+          [class.loading]="loading">
+          {{ loading ? '' : 'Iniciar sesión' }}
         </button>
       </div>
     </form>
