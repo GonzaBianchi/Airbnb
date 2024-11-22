@@ -1,0 +1,150 @@
+.accommodation-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accommodation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.accommodation-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.image-hover {
+  transform: scale(1.05);
+}
+
+.content-container {
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.details {
+  margin-bottom: 2rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.detail-item i {
+  margin-right: 10px;
+  color: #f1c40f;
+  width: 20px;
+}
+
+.services {
+  flex-wrap: wrap;
+}
+
+.service-tag {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.reserve-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: #f1c40f;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.reserve-button:hover, .button-hover {
+  background: #f39c12;
+  transform: translateY(-2px);
+}
+
+.reserve-button i {
+  transition: transform 0.3s ease;
+}
+
+.button-hover i {
+  transform: translateX(5px);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+.animate-fade-in-delay {
+  animation: fadeIn 0.6s ease-in 0.2s both;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+.animate-slide-down-delay {
+  animation: slideDown 0.5s ease-out 0.1s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .accommodation-card {
+    margin: 1rem;
+  }
+  
+  .image-container {
+    height: 300px;
+  }
+  
+  .content-container {
+    padding: 1.5rem;
+  }
+}

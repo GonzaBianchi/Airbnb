@@ -9,7 +9,9 @@ import { LodgingResponse, LodgingService } from '../../services/lodging.service'
 })
 export class LodgingviewComponent implements OnInit{
   hospedaje!: LodgingResponse;
-
+  isHovered = false;
+  isButtonHovered = false;
+  
   constructor(
     private route: ActivatedRoute,
     private lodgingService: LodgingService,

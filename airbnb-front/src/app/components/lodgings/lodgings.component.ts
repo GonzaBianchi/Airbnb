@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 import { LodgingService, LodgingResponse, FiltroHospedaje } from '../../services/lodging.service';
 import { CountrycityService, Pais, Ciudad } from '../../services/countrycity.service';
@@ -10,7 +11,18 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-lodgings',
   templateUrl: './lodgings.component.html',
-  styleUrls: ['./lodgings.component.css']
+  styleUrls: ['./lodgings.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('0.4s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ]),
+      transition(':leave', [
+        animate('0.3s ease-in', style({ opacity: 0, transform: 'translateY(20px)' }))
+      ])
+    ])
+  ]
 })
 export class LodgingsComponent implements OnInit{
   filterForm: FormGroup;
@@ -76,22 +88,12 @@ export class LodgingsComponent implements OnInit{
     } else {
       this.ciudades = [];
     }
-    // Resetear ciudad al cambiar país
     this.filterForm.get('ciudad')?.setValue('');
   }
 
   onServicioChange(event: any) {
-    const servicioId = event.target.value;
-    const isChecked = event.target.checked;
-
-    if (isChecked) {
-      this.serviciosSeleccionados.push(Number(servicioId));
-    } else {
-      const index = this.serviciosSeleccionados.indexOf(Number(servicioId));
-      if (index > -1) {
-        this.serviciosSeleccionados.splice(index, 1);
-      }
-    }
+    const servicioId = Number(event.target.value);
+    this.toggleServicio(servicioId);
   }
 
   aplicarFiltros() { 
@@ -105,12 +107,12 @@ export class LodgingsComponent implements OnInit{
   
     this.lodgingService.getHospedajesFiltered(filtros).subscribe({
       next: (hospedajes) => {
-        this.hospedajesFiltered = hospedajes || []; // Asignar un array vacío si la respuesta es nula
+        this.hospedajesFiltered = hospedajes || [];
         this.cargando = false;
       },
       error: (error) => {
         console.error('Error al filtrar hospedajes', error);
-        this.hospedajesFiltered = []; // Manejar errores devolviendo una lista vacía
+        this.hospedajesFiltered = [];
         this.cargando = false;
       }
     });
@@ -118,21 +120,17 @@ export class LodgingsComponent implements OnInit{
   
 
   resetFiltros() {
-    // Resetear formulario
     this.filterForm.reset({
       pais: '',
       ciudad: '',
       tipo: ''
     });
     
-    // Limpiar servicios seleccionados
     this.serviciosSeleccionados = [];
     
-    // Desmarcar checkboxes de servicios
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach((checkbox: any) => checkbox.checked = false);
 
-    // Cargar todos los hospedajes nuevamente
     this.cargarTodosHospedajes();
   }
 
@@ -143,5 +141,23 @@ export class LodgingsComponent implements OnInit{
   getId(id: number) {
     console.log(id);
     this.router.navigate(['/hospedaje', id]);
+  }
+
+  toggleServicio(servicioId: number | undefined) {
+    if (servicioId === undefined) return;
+    
+    const index = this.serviciosSeleccionados.indexOf(servicioId);
+    if (index > -1) {
+      this.serviciosSeleccionados.splice(index, 1);
+    } else {
+      this.serviciosSeleccionados.push(servicioId);
+    }
+
+    this.serviciosSeleccionados = [...this.serviciosSeleccionados];
+  }
+
+  isServicioSelected(servicioId: number | undefined): boolean {
+    if (servicioId === undefined) return false;
+    return this.serviciosSeleccionados.includes(servicioId);
   }
 }

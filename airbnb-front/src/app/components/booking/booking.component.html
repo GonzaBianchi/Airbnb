@@ -1,30 +1,107 @@
-<div class="container">
-    <h2>Hacer Reserva</h2>
-    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>Fecha Check-In</label>
-        <input type="date" formControlName="fecha_check_in" class="form-control">
+<div class="booking-container" @fadeInOut>
+  <div class="booking-card">
+    <h2 class="booking-title">Hacer Reserva</h2>
+    
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="booking-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>
+            <i class="fas fa-calendar-alt"></i>
+            Check-In
+          </label>
+          <input 
+            type="date" 
+            id="checkIn"
+            formControlName="fecha_check_in" 
+            class="form-control"
+            [min]="minCheckInDate"
+            (change)="updateCheckoutMin()"
+          >
+          <div class="error-message" *ngIf="bookingForm.get('fecha_check_in')?.touched && bookingForm.get('fecha_check_in')?.errors">
+            <span *ngIf="bookingForm.get('fecha_check_in')?.errors?.['required']">
+              Fecha de check-in requerida
+            </span>
+            <span *ngIf="bookingForm.get('fecha_check_in')?.errors?.['minCheckInDate']">
+              La fecha debe ser al menos 2 días después de hoy
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fas fa-calendar-check"></i>
+            Check-Out
+          </label>
+          <input 
+            type="date" 
+            id="checkOut"
+            formControlName="fecha_check_out" 
+            class="form-control"
+            [min]="minCheckOutDate"
+          >
+          <div class="error-message" *ngIf="bookingForm.get('fecha_check_out')?.touched && bookingForm.get('fecha_check_out')?.errors">
+            <span *ngIf="bookingForm.get('fecha_check_out')?.errors?.['required']">
+              Fecha de check-out requerida
+            </span>
+          </div>
+          <div class="error-message" *ngIf="bookingForm.errors?.['invalidDateRange'] && bookingForm.get('fecha_check_out')?.touched">
+            La fecha de check-out debe ser posterior a la fecha de check-in
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Fecha Check-Out</label>
-        <input type="date" formControlName="fecha_check_out" class="form-control">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>
+            <i class="fas fa-user"></i>
+            Adultos
+          </label>
+          <div class="number-input">
+            <input type="number" formControlName="cant_adultos" min="1" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fas fa-child"></i>
+            Niños
+          </label>
+          <div class="number-input">
+            <input type="number" formControlName="cant_ninos" min="0" class="form-control">
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Adultos</label>
-        <input type="number" formControlName="cant_adultos" class="form-control">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>
+            <i class="fas fa-baby"></i>
+            Bebés
+          </label>
+          <div class="number-input">
+            <input type="number" formControlName="cant_bebes" min="0" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fas fa-paw"></i>
+            Mascotas
+          </label>
+          <div class="number-input">
+            <input type="number" formControlName="cant_mascotas" min="0" class="form-control">
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Niños</label>
-        <input type="number" formControlName="cant_ninos" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Bebés</label>
-        <input type="number" formControlName="cant_bebes" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Mascotas</label>
-        <input type="number" formControlName="cant_mascotas" class="form-control">
-      </div>
-      <button type="submit" class="btn btn-primary" [disabled]="bookingForm.invalid">Reservar</button>
+
+        <button 
+        type="submit" 
+        class="submit-button" 
+        [disabled]="bookingForm.invalid || isSubmitting"
+        @buttonAnimation>
+        <i class="fas fa-calendar-plus"></i>
+        {{ isSubmitting ? 'Procesando...' : 'Reservar Ahora' }}
+      </button>
     </form>
   </div>
+</div>

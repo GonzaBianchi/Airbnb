@@ -1,28 +1,58 @@
+<!-- HTML Template -->
 <div class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-8">
-        <div class="card">
-          <img [src]="hospedaje.imagen" class="card-img-top" alt="Accommodation Image">
-          <div class="card-body">
-            <h5 class="card-title">{{ hospedaje.nombre }}</h5>
-            <h6 class="card-title">{{ hospedaje.descripcion }}</h6>
-            <p class="card-text">
-              <strong>{{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}</strong><br>
-              <strong>${{ hospedaje.precio_por_noche }}</strong><br>
-              <strong>{{ hospedaje.id_tipo_hospedaje.nombre }}</strong><br>
-              <strong>
-                <span *ngFor="let servicio of hospedaje.servicios; let last = last">
-                  {{ servicio.nombre }}{{ !last ? ', ' : '' }}
+  <div class="accommodation-card animate-fade-in">
+    <div class="row g-0">
+      <!-- Imagen a la izquierda -->
+      <div class="col-md-6 image-container">
+        <img [src]="hospedaje.imagen" class="accommodation-image" alt="Accommodation Image"
+             [ngClass]="{'image-hover': isHovered}" 
+             (mouseenter)="isHovered = true"
+             (mouseleave)="isHovered = false">
+      </div>
+      
+      <!-- Contenido a la derecha -->
+      <div class="col-md-6">
+        <div class="content-container">
+          <h2 class="title animate-slide-down">{{ hospedaje.nombre }}</h2>
+          <p class="description animate-slide-down-delay">{{ hospedaje.descripcion }}</p>
+          
+          <div class="details animate-fade-in-delay">
+            <div class="detail-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ hospedaje.ciudad.nombre }}, {{ hospedaje.ciudad.pais.nombre }}</span>
+            </div>
+            
+            <div class="detail-item">
+              <i class="fas fa-tag"></i>
+              <span>${{ hospedaje.precio_por_noche }} por noche</span>
+            </div>
+            
+            <div class="detail-item">
+              <i class="fas fa-home"></i>
+              <span>{{ hospedaje.id_tipo_hospedaje.nombre }}</span>
+            </div>
+            
+            <div class="detail-item services">
+              <i class="fas fa-concierge-bell"></i>
+              <span>
+                <span *ngFor="let servicio of hospedaje.servicios; let last = last" 
+                      class="service-tag">
+                  {{ servicio.nombre }}{{ !last ? ' • ' : '' }}
                 </span>
-              </strong>
-            </p>
+              </span>
+            </div>
           </div>
-          <div class="d-grid gap-2">
-            <button class="btn btn-warning" (click)="reservaHospedaje(hospedaje.id)">
-              Reservar
-            </button>
-          </div>
+          
+          <button class="reserve-button" 
+                  (click)="reservaHospedaje(hospedaje.id)"
+                  [ngClass]="{'button-hover': isButtonHovered}"
+                  (mouseenter)="isButtonHovered = true"
+                  (mouseleave)="isButtonHovered = false">
+            <span>Reservar ahora</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>

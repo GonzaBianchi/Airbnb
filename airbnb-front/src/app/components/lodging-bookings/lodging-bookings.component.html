@@ -55,11 +55,13 @@
         </td>
         <td>
           <div *ngIf="booking.estado !== 'Cancelada'" class="btn-group">
-            <button 
-              class="btn btn-sm btn-primary"
-              (click)="confirmarReserva(booking.id)">
-              Confirmar
-            </button>
+            <div *ngIf="booking.estado === 'Pendiente'">
+              <button 
+                class="btn btn-sm btn-primary"
+                (click)="confirmarReserva(booking.id)">
+                Confirmar
+              </button>
+            </div>
             <button 
               class="btn btn-sm btn-danger"
               (click)="cancelarReserva(booking.id)">

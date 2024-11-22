@@ -46,14 +46,20 @@ export class BookingService {
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Error del servidor
-      if (error.status === 404) {
-        errorMessage = 'No se encontró el recurso solicitado';
-      } else if (error.status === 400) {
-        errorMessage = 'Solicitud incorrecta';
-      } else if (error.status === 403) {
-        errorMessage = 'No tiene permisos para realizar esta acción';
-      } else if (error.status === 500) {
-        errorMessage = 'Error interno del servidor';
+      // Usamos el mensaje que viene del backend si está disponible
+      errorMessage = error.error || errorMessage;
+      
+      // Si no hay un mensaje específico del backend, usamos los mensajes por defecto
+      if (!error.error) {
+        if (error.status === 404) {
+          errorMessage = 'No se encontró el recurso solicitado';
+        } else if (error.status === 400) {
+          errorMessage = 'Solicitud incorrecta';
+        } else if (error.status === 403) {
+          errorMessage = 'No tiene permisos para realizar esta acción';
+        } else if (error.status === 500) {
+          errorMessage = 'Error interno del servidor';
+        }
       }
     }
     

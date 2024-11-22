@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +33,7 @@ import { LodgingBookingsComponent } from './components/lodging-bookings/lodging-
     LodgingviewComponent,
     BookingComponent,
     MybookingsComponent,
-    LodgingBookingsComponent,
+    LodgingBookingsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +41,8 @@ import { LodgingBookingsComponent } from './components/lodging-bookings/lodging-
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

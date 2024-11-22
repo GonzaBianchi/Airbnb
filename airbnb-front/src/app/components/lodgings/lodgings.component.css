@@ -1,39 +1,407 @@
-.card {
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+/* lodgings.component.css */
+/* Variables */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+}
+
+/* Filtros */
+.filter-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.filter-header {
+  background: var(--light-color);
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--dark-color);
+}
+
+.filter-body {
+  padding: 1.5rem;
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--dark-color);
+  font-weight: 500;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  transition: var(--transition);
+}
+
+.filter-group select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.services-container {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: var(--light-color);
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.filter-actions {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-apply, .btn-reset {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-apply {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-apply:hover {
+  background: #0056b3;
+}
+
+.btn-reset {
+  background: var(--light-color);
+  color: var(--secondary-color);
+}
+
+.btn-reset:hover {
+  background: #e2e6ea;
+}
+
+.lodgings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.lodging-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  transform-origin: center;
+  animation: cardAppear 0.5s ease-out;
+}
+
+.lodging-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.lodging-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.card-image {
+  position: relative;
+  padding-top: 65%;
+  overflow: hidden;
+}
+
+.card-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: white;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.location i {
+  color: #ffd700;
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-content h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.description {
+  color: #718096;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #48bb78;
+}
+
+.type {
+  padding: 0.35rem 0.75rem;
+  background: #ebf4ff;
+  color: #4299e1;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.services span {
+  padding: 0.35rem 0.75rem;
+  background: #f7fafc;
+  color: #718096;
+  border-radius: 15px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.services span:hover {
+  background: #edf2f7;
+  transform: translateY(-2px);
+}
+
+.btn-view {
+  width: 100%;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 10px;
+  background: #ffd700;
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-view:hover {
+  background: #ffc800;
+  transform: translateY(-2px);
+}
+
+.btn-view i {
+  transition: transform 0.3s ease;
+}
+
+.btn-view:hover i {
+  transform: translateX(4px);
+}
+
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  animation: spin 1s linear infinite;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #a0aec0;
+  margin-bottom: 1rem;
+}
+
+.loading-state p,
+.empty-state p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .services-scroll {
-    max-height: 200px;
-    overflow-y: auto;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  .services-scroll .form-check {
-    margin-bottom: 0.5rem;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.service-item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.service-item input[type="checkbox"] {
+  margin-right: 0.75rem;
+  cursor: pointer;
+}
+
+.service-item label {
+  margin: 0;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+  .lodgings-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 0.5rem;
   }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004a9b;
+
+  .card-content {
+    padding: 1.25rem;
   }
-  
-  .btn-outline-secondary {
-    color: #6c757d;
-    border-color: #6c757d;
+
+  .card-content h3 {
+    font-size: 1.25rem;
   }
-  
-  .btn-outline-secondary:hover {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: #fff;
+
+  .price {
+    font-size: 1.15rem;
   }
+}
+
+.lodgings-grid > * {
+  animation: cardAppear 0.5s ease-out backwards;
+}
+
+.lodgings-grid > *:nth-child(1) { animation-delay: 0.1s; }
+.lodgings-grid > *:nth-child(2) { animation-delay: 0.2s; }
+.lodgings-grid > *:nth-child(3) { animation-delay: 0.3s; }
+.lodgings-grid > *:nth-child(4) { animation-delay: 0.4s; }
+.lodgings-grid > *:nth-child(n+5) { animation-delay: 0.5s; }
